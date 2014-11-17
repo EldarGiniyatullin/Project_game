@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Images/Menu.mp3</file>
+        <file>Images/Menu_2.mp3</file>
+        <file>Images/Menu_font_3.png</file>
+        <file>Images/Menu_font.png</file>
+        <file>Images/Menu_font_2.png</file>
+        <file>Images/New_game_button.png</file>
+        <file>Images/Main_menu_button.png</file>
+    </qresource>
+</RCC>
