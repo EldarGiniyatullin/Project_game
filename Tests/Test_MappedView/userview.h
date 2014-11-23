@@ -2,7 +2,7 @@
 #define USERVIEW_H
 
 #include <QMainWindow>
-#include "graphicsscene.h"
+#include "scenemanager.h"
 
 
 namespace Ui {

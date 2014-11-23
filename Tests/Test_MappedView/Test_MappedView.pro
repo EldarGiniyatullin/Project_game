@@ -16,6 +16,10 @@ SOURCES += main.cpp\
         userview.cpp
 
 HEADERS  += userview.h \
+    mapobject.h \
+    gameobject.h \
+    scenetable.h \
+    scenemanager.h \
     graphicsscene.h
 
 FORMS    += userview.ui

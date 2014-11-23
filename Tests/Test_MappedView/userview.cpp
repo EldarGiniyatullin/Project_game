@@ -1,6 +1,6 @@
 #include "userview.h"
 #include "ui_userview.h"
-#include "graphicsscene.h"
+#include "scenemanager.h"
 
 #include <QGraphicsScene>
 #include <QGraphicsView>
