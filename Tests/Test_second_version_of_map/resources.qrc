@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Cross.png</file>
+        <file>field.png</file>
+        <file>Little_tree.png</file>
+        <file>No_image.png</file>
+        <file>road.png</file>
+    </qresource>
+</RCC>
