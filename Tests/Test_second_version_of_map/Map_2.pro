@@ -18,10 +18,14 @@ SOURCES += main.cpp \
 
 HEADERS  += \
     map_object.h \
-    map_square.h \
     graphics_scene.h \
     surface_object.h \
-    mapfacade.h
+    mapfacade.h \
+    pixmap_item.h \
+    surface_map.h \
+    personage.h \
+    prop_object.h \
+    prop_map.h
 
 FORMS    += \
     mapfacade.ui

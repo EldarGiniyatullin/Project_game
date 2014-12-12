@@ -4,14 +4,36 @@
 #include <QMap>
 #include "map_object.h"
 
+enum SurfaceType {NOIMAGE = 0, FIELD, ROAD, WATER, ROCKS, /*SAND, BURNED,*/ SWAMP};
+
 class SurfaceObject : public MapObject
 {
 public:
-    SurfaceObject() : MapObject(QPixmap("://No_image.png")), isPassable(true) {}
-    SurfaceObject(QPixmap pixmap, int vert, int horiz, bool isPass = true) : MapObject(pixmap, vert, horiz), isPassable(isPass) {}
-    SurfaceObject(QPixmap pixmap, bool isPass = true) : MapObject(pixmap), isPassable(isPass) {}
-    SurfaceObject(PixmapItem *pixItem, bool isPass = true) : MapObject(pixItem), isPassable(isPass) {}
-    SurfaceObject(const SurfaceObject& objectToCopy) : MapObject(objectToCopy), isPassable(objectToCopy.getIsPassable()) {}
+    SurfaceObject()
+        : MapObject(QPixmap("://No_image.png")),
+          isPassable(true),
+          type(NOIMAGE)
+    {setDrawingPriority(0);}
+    SurfaceObject(QPixmap pixmap, int vert, int horiz, SurfaceType objType, bool isPass = true)
+        : MapObject(pixmap, vert, horiz),
+          isPassable(isPass),
+          type(objType)
+    {setDrawingPriority(0);}
+    SurfaceObject(QPixmap pixmap, SurfaceType objType, bool isPass = true)
+        : MapObject(pixmap),
+          isPassable(isPass),
+          type(objType)
+    {setDrawingPriority(0);}
+    SurfaceObject(PixmapItem *pixItem, SurfaceType objType, bool isPass = true)
+        : MapObject(pixItem),
+          isPassable(isPass),
+          type(objType)
+    {setDrawingPriority(0);}
+    SurfaceObject(const SurfaceObject& objectToCopy)
+        : MapObject(objectToCopy),
+          isPassable(objectToCopy.getIsPassable()),
+          type(objectToCopy.getSurfaceType())
+    {setDrawingPriority(0);}
 //    SurfaceObject( SurfaceObject *objectToCopy) : MapObject(*objectToCopy), isPassable(objectToCopy->getIsPassable()) {}
 //    ~SurfaceObject();
     void setPassability(bool passability)
@@ -24,12 +46,17 @@ public:
         return isPassable;
     }
 
+    SurfaceType getSurfaceType() const
+    {
+        return type;
+    }
+
 protected:
     bool isPassable;
+    SurfaceType type;
 };
 
 
-enum SurfaceType {FIELD = 1, ROAD, CROSS, NOIMAGE, WATER, ROCKS, SAND, BURNED};
 
 
 class SurfaceFactory
@@ -40,28 +67,33 @@ public:
     {
         map = new QMap<SurfaceType, SurfaceObject>;
         map->clear();
-        map->insert(FIELD, SurfaceObject(QPixmap("://field.png"), true));
-        map->insert(ROAD, SurfaceObject(QPixmap("://road.png"), true));
-        map->insert(CROSS, SurfaceObject(QPixmap("://Cross.png"), true));
-        map->insert(NOIMAGE, SurfaceObject(QPixmap("://No_image.png"), true));
+        map->insert(FIELD, SurfaceObject(QPixmap("://field.png"), FIELD, true));
+        map->insert(ROAD, SurfaceObject(QPixmap("://road.png"), ROAD, true));
+        map->insert(WATER, SurfaceObject(QPixmap("://water.png"), WATER, false));
+        map->insert(ROCKS, SurfaceObject(QPixmap("://rocks.png"), ROCKS, false));
+        map->insert(SWAMP, SurfaceObject(QPixmap("://swamp.png"), SWAMP, false));
+        currentType = FIELD;
     }
 
-    SurfaceObject *clone(SurfaceType typeOfSurface)
-    {
-//        SurfaceObject *newObj(new SurfaceObject(map->value(typeOfSurface)));
-        // и протестировать оптимизацию-обобщение
-        SurfaceObject *newObj;
-        switch(typeOfSurface)
-        {
-            case FIELD : newObj = new SurfaceObject(QPixmap("://field.png"), true);
-        break;
-            case ROAD : newObj = new SurfaceObject(QPixmap("://road.png"), true);
-        break;
-        }
 
+    SurfaceObject *clone(SurfaceType type)
+    {
+        SurfaceObject *newObj(new SurfaceObject(map->value(type)));
+        // и протестировать оптимизацию-обобщение
         return newObj;
     }
+
+    SurfaceObject *clone()
+    {
+        return clone(currentType);
+    }
+
+    void setType (SurfaceType type)
+    {
+        currentType = type;
+    }
+
 protected:
     QMap<SurfaceType, SurfaceObject> *map;
+    SurfaceType currentType;
 };
-
