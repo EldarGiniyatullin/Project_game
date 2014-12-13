@@ -15,13 +15,13 @@ public:
             table[i] = QVector <SurfaceObject*> (yMapHeight);
             for (int j = 0; j < table[i].size(); j++)
             {
-                if (i % 5 == 0 && j % 5 == 0)
+                if (i == 50 || j == 50)
                     table[i][j] = factory->clone(ROAD);
-                else if (i % 19 == 0 && j % 19 == 0)
+                else if (i >= 10 && i <= 20 &&  j >= 10 && j <= 15)
                     table[i][j] = factory->clone(ROCKS);
-                else if (i % 13 == 0 && j % 13 == 0)
+                else if (i >= 21 && i <= 25 &&  j >= 21 && j <= 25)
                     table[i][j] = factory->clone(WATER);
-                else if (i % 31 == 0 && j % 31 == 0)
+                else if (i >= 31 && i <= 35 &&  j >= 31 && j <= 35)
                     table[i][j] = factory->clone(SWAMP);
                 else table[i][j] = factory->clone(FIELD);
             }

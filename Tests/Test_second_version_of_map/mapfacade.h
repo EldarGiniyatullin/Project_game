@@ -29,23 +29,31 @@ public:
     bool checkPassabilityOfSquare(QPoint squarePoint);
 
 
-//    Personage *personageAt(const QPointF &point)
-//    {
-//        QPoint tempPoint = toMapCoordinates(point);
-//        return personageMap[tempPoint.x()][tempPoint.y()];
-//    }
+    Personage *personageAt(QPoint point)
+    {
+        for (int i = 0; i < listOfPersonages.size(); i++)
+        {
+            if (listOfPersonages[i]->currentPos() == point)
+            {
+                qDebug() << "personage is";
+                return listOfPersonages[i];
+            }
+        }
+        qDebug() << "personage is not";
+        return nullptr;
+    }
 
     QPoint toMapCoordinates(const QPointF &point)
     {
         return QPoint(xToMapCoordinates(point), yToMapCoordinates(point));
     }
 
-    int xToMapCoordinates(const QPointF &point)
+    qreal xToMapCoordinates(const QPointF &point)
     {
         return (point.x() + (xWidth / 2)) / squareSize;
     }
 
-    int yToMapCoordinates(const QPointF &point)
+    qreal yToMapCoordinates(const QPointF &point)
     {
         return (point.y() + (yHeight / 2))  / squareSize;
     }
@@ -55,7 +63,13 @@ public:
         return QPointF(squareSize * x + (squareSize / 2) + 1 - (xWidth / 2), squareSize * y +(squareSize / 2) + 1 - (yHeight / 2));
     }
 
-    void addPersonage(Personage *pers);
+    QPointF squareCenter(QPoint point)
+    {
+        return squareCenter(point.x(), point.y());
+    }
+
+    void addPersonage(Personage *pers, int xCoord, int yCoord);
+    void drawPersWay(Personage *pers);
     void mousePressEvent(QMouseEvent *event);
 protected:
     int xSquareNumber;
@@ -68,6 +82,9 @@ protected:
     SurfaceMap *surMap;
     PropMap *prMap;
     GraphicsScene *mapScene;
+    QList<Personage*> listOfPersonages;
+    PersonageMaker persMaker;
+    Personage *settedPers;
 public slots:
     void buildWay(Personage* pers, QPoint point);
 private:
