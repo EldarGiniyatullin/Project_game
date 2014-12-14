@@ -24,7 +24,8 @@ AStarPoint *AStar::getPoint(QPoint point)
 	else
 	{
 		return new AStarPoint(QPoint(0, 0), false);
-	}}
+	}
+}
 
 AStarPoint *AStar::getPointFromCoord(QPoint coord)
 {

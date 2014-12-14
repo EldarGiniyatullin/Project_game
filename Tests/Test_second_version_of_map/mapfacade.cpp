@@ -128,7 +128,7 @@ void MapFacade::buildWay(Personage *pers, QPoint point)
             openList.push_back(start);
             start->opened = true;
 
-            while (n == 0 || (current != end && n < 50))
+			while (n == 0 || (current != end && n < xSquareNumber * ySquareNumber))
             {
                 for (i = openList.begin(); i != openList.end(); ++i)
                 {
