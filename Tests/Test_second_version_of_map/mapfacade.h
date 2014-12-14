@@ -1,4 +1,9 @@
 #pragma once
+
+#include <QThread>
+#include <QKeyEvent>
+#include <cmath>
+#include <QTimer>
 #include <QWidget>
 #include <QVector>
 #include <QDebug>
@@ -8,6 +13,7 @@
 #include "prop_map.h"
 #include "personage.h"
 #include "astarpoint.h"
+
 
 
 
@@ -43,6 +49,21 @@ public:
         return nullptr;
     }
 
+    void movePersonage(Personage *pers)
+    {
+        //sound
+        //while !endOfMoves
+        while (!pers->getWayToGo().isEmpty())
+        {
+            QThread::msleep(100);
+            oneMove(pers);
+            qDebug() << pers->objectPixmapItem->isVisible();
+        }
+        //if other click - break;
+
+        //sound stop
+    }
+
     QPoint toMapCoordinates(const QPointF &point)
     {
         return QPoint(xToMapCoordinates(point), yToMapCoordinates(point));
@@ -71,6 +92,35 @@ public:
     void addPersonage(Personage *pers, int xCoord, int yCoord);
     void drawPersWay(Personage *pers);
     void mousePressEvent(QMouseEvent *event);
+    void keyPressEvent(QKeyEvent *event);
+public slots:
+    void oneMove(Personage *pers)
+    {
+        if (!pers->getWayToGo().isEmpty())
+        {
+            QPoint point = pers->getWayToGo().first();
+            //центр камеры на него
+            if ((abs(pers->getXCoord() - point.x()) > 1) || (abs(pers->getYCoord() - point.y()) > 1))
+            {
+                delete pers->getWayDrawning().takeFirst();
+                pers->objectPixmapItem->setPos(squareCenter(point));
+                pers->setPos(point.x(), point.y());
+                pers->getWayToGo().takeFirst();
+            }
+            else
+            {
+                // можно добавить еще к анимации, поэтому выделено отдельно
+                delete pers->getWayDrawning().takeFirst();
+
+                pers->objectPixmapItem->setPos(squareCenter(point));
+                pers->setPos(point.x(), point.y());
+                pers->getWayToGo().takeFirst();
+            }
+            //better to "update" optimal rect in scene
+            mapScene->view->repaint();
+        }
+    }
+
 protected:
     int xSquareNumber;
     int ySquareNumber;
@@ -90,8 +140,8 @@ public slots:
 private:
     Ui::MapFacade *ui;
 
-	AStarPoint *getPoint(QPoint point);
-	AStarPoint *getPointFromCoord(QPoint coord);
-	QMap <int, QMap <int, AStarPoint*> > AStarCells;
-	bool pointExists(QPoint point);
+    AStarPoint *getPoint(QPoint point);
+    AStarPoint *getPointFromCoord(QPoint coord);
+    QMap <int, QMap <int, AStarPoint*> > aStarCells;
+    bool pointExists(QPoint point);
 };
