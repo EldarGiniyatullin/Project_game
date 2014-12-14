@@ -7,7 +7,7 @@
 #include "surface_map.h"
 #include "prop_map.h"
 #include "personage.h"
-
+#include "astarpoint.h"
 
 
 
@@ -89,4 +89,9 @@ public slots:
     void buildWay(Personage* pers, QPoint point);
 private:
     Ui::MapFacade *ui;
+
+	AStarPoint *getPoint(QPoint point);
+	AStarPoint *getPointFromCoord(QPoint coord);
+	QMap <int, QMap <int, AStarPoint*> > AStarCells;
+	bool pointExists(QPoint point);
 };
