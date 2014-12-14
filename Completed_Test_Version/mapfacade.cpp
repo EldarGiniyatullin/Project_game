@@ -39,6 +39,13 @@ MapFacade::MapFacade(int xSquareNum, int ySquareNum, int squareSide, QWidget *pa
 
 MapFacade::~MapFacade()
 {
+    prMap->removeAll();
+    delete prMap;
+    surMap->removeAll();
+    delete surMap;
+    delete mapScene;
+    for (int i = 0; i < listOfPersonages.size(); i++)
+        delete listOfPersonages[i];
     delete ui;
 }
 
@@ -80,9 +87,24 @@ void MapFacade::movePersonage(Personage *pers)
         qDebug() << pers->objectPixmapItem->isVisible();
     }
     //if other click - break;
-
     //sound stop
 }
+
+qreal MapFacade::xToMapCoordinates(const QPointF &point)
+{
+    return (point.x() + (xWidth / 2)) / squareSize;
+}
+
+qreal MapFacade::yToMapCoordinates(const QPointF &point)
+{
+    return (point.y() + (yHeight / 2))  / squareSize;
+}
+
+QPointF MapFacade::squareCenter(QPoint point)
+{
+    return squareCenter(point.x(), point.y());
+}
+
 
 void MapFacade::addPersonage(Personage *pers, int xCoord, int yCoord)
 {
@@ -317,27 +339,9 @@ void MapFacade::buildWay(Personage *pers, QPoint point)
     AStarPoint *MapFacade::getPointFromCoord(QPoint coord)
     {
         return getPoint(coord);
-     }
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    if ((pers->currentPos() != point) && (checkPassabilityOfSquare(point)))
+    //    if ((pers->currentPos() != point) && (checkPassabilityOfSquare(point)))
 //    {
 //        pers->clearWayToGo();
 //        QPoint tempPoint = pers->currentPos();

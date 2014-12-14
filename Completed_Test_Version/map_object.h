@@ -9,7 +9,7 @@ public:
     MapObject(const QPixmap& pixmap) : objectPixmapItem(new PixmapItem(pixmap)) {}
     MapObject(PixmapItem *pixItem) : objectPixmapItem(pixItem) {}
     MapObject(const MapObject& objectToCopy) : objectPixmapItem(new PixmapItem(*(objectToCopy.objectPixmapItem))) {}
-    ~MapObject()
+    virtual ~MapObject()
     {
         delete objectPixmapItem;
     }

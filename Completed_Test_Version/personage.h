@@ -26,12 +26,13 @@ public:
     Personage(PixmapItem *pixItem, Fraction frac, Speciality spec) : QObject(), MapObject(pixItem), persFraction(frac), persSpeciality(spec) {wayToGo.clear();}
     Personage(const Personage& personageToCopy) : QObject(), MapObject(personageToCopy), persFraction(personageToCopy.persFraction),
         persSpeciality(personageToCopy.persSpeciality) {}
-//    ~Personage();
-    void setPos(int xPos, int yPos)
+    ~Personage()
     {
-        xCoord = xPos;
-        yCoord = yPos;
+        for (int i = 0; i < wayDrawing.size(); i++)
+            delete wayDrawing[i];
     }
+
+    void setPos(int xPos, int yPos);
 
     void moveTo(int xSquare, int ySquare)
     {
@@ -65,11 +66,7 @@ public:
     }
 
 
-   Personage &operator=(const Personage &pers)
-   {
-       Personage temp(pers);
-       return temp;
-   }
+   Personage &operator=(const Personage &pers);
 
    QList<QPoint> &getWayToGo()
    {
@@ -136,42 +133,3 @@ protected:
     QList<PixmapItem*> wayDrawing;
 
 };
-
-//it needs better realization
-class PersonageMaker
-{
-public:
-    PersonageMaker(int squareSize)
-    {
-        map.clear();
-        QPixmap warrior("://first_personage.png");
-        map.insert(WARRIOR, Personage(warrior, warrior.width() / (-2), (squareSize / 2) - warrior.height(), GREEN, WARRIOR));
-    }
-
-    Personage* makePers(Fraction frac, Speciality spec)
-    {
-        Personage *newPers(new Personage(map.value(spec)));
-        newPers->setPersFraction(frac);
-        return newPers;
-    }
-protected:
-    QMap<Speciality, Personage> map;
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

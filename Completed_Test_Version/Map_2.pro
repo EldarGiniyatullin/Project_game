@@ -15,7 +15,13 @@ CONFIG += c++11
 
 SOURCES += main.cpp \
     mapfacade.cpp \
-    astarpoint.cpp
+    astarpoint.cpp \
+    graphics_scene.cpp \
+    personage.cpp \
+    prop_map.cpp \
+    prop_factory.cpp \
+    personage_maker.cpp \
+    surface_map.cpp
 
 HEADERS  += \
     map_object.h \
@@ -27,7 +33,10 @@ HEADERS  += \
     personage.h \
     prop_object.h \
     prop_map.h \
-    astarpoint.h
+    astarpoint.h \
+    prop_factory.h \
+    surface_factory.h \
+    personage_maker.h
 
 FORMS    += \
     mapfacade.ui

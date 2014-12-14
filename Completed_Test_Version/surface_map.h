@@ -2,6 +2,7 @@
 
 #include <QVector>
 #include "surface_object.h"
+#include "surface_factory.h"
 
 //тут может быть шаблон
 class SurfaceMap
@@ -27,6 +28,9 @@ public:
             }
         }
     }
+
+    void removeAll();
+
     SurfaceObject* objectAt(int x, int y) const
     {
         if (x >=0 && x < xMapWidth && y >= 0 && y < yMapHeight)
@@ -47,3 +51,6 @@ protected:
     int yMapHeight;
     QVector<QVector<SurfaceObject*> > table;
 };
+
+
+

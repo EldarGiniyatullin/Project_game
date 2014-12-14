@@ -2,6 +2,7 @@
 
 #include <QVector>
 #include "prop_object.h"
+#include "prop_factory.h"
 
 //тут может быть шаблон
 class PropMap
@@ -14,22 +15,17 @@ public:
         {
             table[i] = QVector <PropObject*> (yMapHeight);
             for (int j = 0; j < table[i].size(); j++)
-            {                                                                        //раскомментируйте это, чтобы проверить выбегание из квадрата
-				if (((i >= 0 && i <= 20 && (j == 0 || j == 20)) || (j >= 0 && j <= 20 && (i == 0 || i == 20))) && !(j == 7 && i == 20))
+            {                                                                 //раскомментируйте это, чтобы проверить выбегание из квадрата
+                if (((i >= 0 && i <= 20 && (j == 0 || j == 20)) || (j >= 0 && j <= 20 && (i == 0 || i == 20)))/* && !(j == 7 && i == 20)*/)
                     table[i][j] = factory->clone(TREE_1);
                 else table[i][j] == nullptr;
             }
         }
     }
-    PropObject* objectAt(int x, int y) const
-    {
-        if (x >= 0 && x < xMapWidth && y >= 0 && y < yMapHeight)
-        {
-                qDebug() << "objectAt square number " << x << " " << y;
-                return table[x][y];
-        }
-        else qDebug() << "error: incorrect square number " << x << " " << y;
-    }
+
+    void removeAll();
+
+    PropObject *objectAt(int x, int y) const;
 
 protected:
     PropFactory *factory;
