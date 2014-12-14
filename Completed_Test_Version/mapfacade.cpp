@@ -158,11 +158,11 @@ void MapFacade::oneMove(Personage *pers)
 void MapFacade::buildWay(Personage *pers, QPoint point)
 {
     qDebug() << pers->currentPos();
-    for (int i = 0; i < xSquareNumber; i++)
+	for (int i = 0; i < xSquareNumber; i++)
     {
-        for (int j = 0; j < ySquareNumber; j++)
+		for (int j = 0; j < ySquareNumber; j++)
         {
-            aStarCells[i][j] = new AStarPoint(QPoint(i, j), checkPassabilityOfSquare(i, j));
+			aStarCells[i][j] = new AStarPoint(QPoint(i, j), checkPassabilityOfSquare(i, j));
         }
     }
 
@@ -184,7 +184,7 @@ void MapFacade::buildWay(Personage *pers, QPoint point)
         openList.push_back(start);
         start->opened = true;
 
-        while (n == 0 || (current != end && n < xSquareNumber * ySquareNumber))
+		while (n == 0 || (current != end && n < xSquareNumber * ySquareNumber))
         {
             for (i = openList.begin(); i != openList.end(); ++i)
                 {
@@ -221,18 +221,18 @@ void MapFacade::buildWay(Personage *pers, QPoint point)
                             continue;
                         }
 
-                        if (x != 0 && y != 0)
-                        {
-                            if (!checkPassabilityOfSquare(QPoint(current->getX(), current->getY() + y)) || getPoint(QPoint(current->getX(), current->getY() + y))->closed)
-                            {
-                                continue;
-                            }
+						if (x != 0 && y != 0)
+						{
+							if (!checkPassabilityOfSquare(QPoint(current->getX(), current->getY() + y)) || getPoint(QPoint(current->getX(), current->getY() + y))->closed)
+							{
+								continue;
+							}
 
-                            if (!checkPassabilityOfSquare(QPoint(current->getX() + x, current->getY())) || getPoint(QPoint(current->getX() + x, current->getY()))->closed)
-                            {
-                                continue;
-                            }
-                        }
+							if (!checkPassabilityOfSquare(QPoint(current->getX() + x, current->getY())) || getPoint(QPoint(current->getX() + x, current->getY()))->closed)
+							{
+								continue;
+							}
+						}
 
                         if (child->opened)
                         {
@@ -311,7 +311,7 @@ void MapFacade::buildWay(Personage *pers, QPoint point)
 
     bool MapFacade::pointExists(QPoint point)
     {
-        return (point.x() >= 0 && point.y() >=0 && point.x() < aStarCells.size() && point.y() < aStarCells.size());
+		return (point.x() >= 0 && point.y() >=0 && point.x() < xSquareNumber && point.y() < ySquareNumber);
     }
 
     AStarPoint *MapFacade::getPointFromCoord(QPoint coord)

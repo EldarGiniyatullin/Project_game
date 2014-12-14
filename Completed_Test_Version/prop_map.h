@@ -15,7 +15,7 @@ public:
             table[i] = QVector <PropObject*> (yMapHeight);
             for (int j = 0; j < table[i].size(); j++)
             {                                                                        //раскомментируйте это, чтобы проверить выбегание из квадрата
-                if (((i >= 0 && i <= 20 && (j == 0 || j == 20)) || (j >= 0 && j <= 20 && (i == 0 || i == 20))) /*&& !(j == 7 && i == 20)*/)
+				if (((i >= 0 && i <= 20 && (j == 0 || j == 20)) || (j >= 0 && j <= 20 && (i == 0 || i == 20))) && !(j == 7 && i == 20))
                     table[i][j] = factory->clone(TREE_1);
                 else table[i][j] == nullptr;
             }
