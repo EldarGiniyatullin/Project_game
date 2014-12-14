@@ -21,7 +21,8 @@ SOURCES += main.cpp \
     prop_map.cpp \
     prop_factory.cpp \
     personage_maker.cpp \
-    surface_map.cpp
+    surface_map.cpp \
+    saverloader.cpp
 
 HEADERS  += \
     map_object.h \
@@ -37,7 +38,8 @@ HEADERS  += \
     prop_factory.h \
     surface_factory.h \
     personage_maker.h \
-    mapfacade_save_object.h
+    mapfacade_save_object.h \
+    saverloader.h
 
 FORMS    += \
     mapfacade.ui
