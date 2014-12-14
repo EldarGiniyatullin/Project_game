@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>No_image.png</file>
+        <file>rocks.png</file>
+        <file>swamp.png</file>
+        <file>water.png</file>
+        <file>road.png</file>
+        <file>tree_2.png</file>
+        <file>tree_1.png</file>
+        <file>field.png</file>
+        <file>first_personage.png</file>
+        <file>cross.png</file>
+        <file>dot.png</file>
+    </qresource>
+</RCC>
