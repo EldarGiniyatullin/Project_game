@@ -16,6 +16,11 @@ public:
           horizCorr((pixmap.height() / (-2)) - (pixmap.height() % 2)) {}
     PixmapItem(const PixmapItem& pixItem) : QGraphicsPixmapItem(pixItem.pixmap()), vertCorr(pixItem.vertCorr),
         horizCorr(pixItem.horizCorr){}
+    ~PixmapItem()
+    {
+        qDebug() << "PixmapItem deleted";
+    }
+
     void setCorr(int x, int y)
     {
         vertCorr = x;

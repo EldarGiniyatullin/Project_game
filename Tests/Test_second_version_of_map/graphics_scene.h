@@ -10,7 +10,7 @@ public:
         scene = new QGraphicsScene();
         view = new QGraphicsView(scene, parent);
         view->setFixedSize(xWidth, 1000);
-        view->setViewportUpdateMode(QGraphicsView::BoundingRectViewportUpdate);
+        view->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
         scene->setItemIndexMethod(QGraphicsScene::BspTreeIndex);
 
         view->show();

@@ -79,10 +79,12 @@ public:
    {
        wayToGo.clear();
        while (!wayDrawing.isEmpty())
+       {
            delete wayDrawing.takeFirst();
+       }
    }
 
-   QList<PixmapItem*> getWayDrawning()
+   QList<PixmapItem*> &getWayDrawning()
    {
        return wayDrawing;
    }
@@ -102,6 +104,24 @@ public:
            wayDrawing.append(new PixmapItem(QPixmap("://cross.png")));
            wayDrawing.last()->setZValue(100);
        }
+   }
+
+   int getXCoord() const
+   {
+       return xCoord;
+   }
+   void setXCoord(int value)
+   {
+       xCoord = value;
+   }
+
+   int getYCoord() const
+   {
+       return yCoord;
+   }
+   void setYCoord(int value)
+   {
+       yCoord = value;
    }
 
 signals:
@@ -137,6 +157,14 @@ public:
 protected:
     QMap<Speciality, Personage> map;
 };
+
+
+
+
+
+
+
+
 
 
 
