@@ -2,7 +2,7 @@
 
 #include "map_object.h"
 
-enum PropType {TREE_1 = 1, TREE_2};
+enum PropType {NULLOBJECT = 0, TREE_1 = 1, TREE_2};
 
 class PropObject : public MapObject
 {
