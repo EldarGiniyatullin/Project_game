@@ -106,6 +106,9 @@ MapEditorWidget::~MapEditorWidget()
     delete rocksButton;
     delete persButton;
     delete cursorButton;
+
+    delete surfMapper;
+    delete propMapper;
 }
 
 void MapEditorWidget::mousePressEvent(QMouseEvent *event)

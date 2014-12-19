@@ -71,9 +71,9 @@ public slots:
     }
     void saveMap()
     {
-        MapFacadeSaveObject *saveObj = editMap->saveToObject();
+        MapFacadeSaveObject saveObj = editMap->saveToObject();
         SaverLoader saver;
-        saver.save(*saveObj);
+        saver.save(saveObj);
     }
     void loadMap()
     {
