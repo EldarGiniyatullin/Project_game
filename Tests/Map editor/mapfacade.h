@@ -22,6 +22,11 @@ enum PersonageMoveState {NOMOVE, MOVE};
 class MapFacadeSaveObject
 {
 public:
+    MapFacadeSaveObject()
+    {
+
+    }
+
     int xSquareNumber;
     int ySquareNumber;
     int numberOfPersonages;
@@ -106,28 +111,28 @@ public:
         return mapScene->view;
     }
 
-    MapFacadeSaveObject *saveToObject()
+    MapFacadeSaveObject saveToObject()
     {
-        MapFacadeSaveObject *saveObject = new MapFacadeSaveObject();
-        saveObject->numberOfPersonages = listOfPersonages.size();
-        saveObject->xSquareNumber = this->xSquareNumber;
-        saveObject->ySquareNumber = this->ySquareNumber;
+        MapFacadeSaveObject saveObject;
+        saveObject.numberOfPersonages = listOfPersonages.size();
+        saveObject.xSquareNumber = this->xSquareNumber;
+        saveObject.ySquareNumber = this->ySquareNumber;
         for (int x = 0; x < xSquareNumber; x++)
             for (int y = 0; y < ySquareNumber; y++)
             {
                 if (prMap->objectAt(x, y))
                 {
                     PropType type = prMap->objectAt(x, y)->getPropType();
-                    saveObject->props.append(type);
+                    saveObject.props.append(type);
                 }
                 else
-                    saveObject->props.append(NULLOBJECT);
-                saveObject->surfaces.append(surMap->objectAt(x, y)->getSurfaceType());
+                    saveObject.props.append(NULLOBJECT);
+                saveObject.surfaces.append(surMap->objectAt(x, y)->getSurfaceType());
             }
-        for (int i = 0; i < saveObject->numberOfPersonages; i++)
+        for (int i = 0; i < saveObject.numberOfPersonages; i++)
         {
             Personage *currPers = listOfPersonages[i];
-            saveObject->personages.append(MapFacadeSaveObject::SavedPersonage(currPers->getPersFraction(), currPers->getPersSpeciality(), currPers->getXCoord(), currPers->getYCoord()));
+            saveObject.personages.append(MapFacadeSaveObject::SavedPersonage(currPers->getPersFraction(), currPers->getPersSpeciality(), currPers->getXCoord(), currPers->getYCoord()));
         }
         return saveObject;
     }
