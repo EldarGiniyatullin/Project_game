@@ -8,7 +8,7 @@ SaverLoader::SaverLoader()
 void SaverLoader::save(const MapFacadeSaveObject& object)
 {
 	//QFile file("C://Users/Inspiron/projectGame/Maps/" + object.name + ".txt");
-    QFile file("C:/Progs/Project_game/Map editor/map.txt");
+	QFile file("./../map.txt");
 	file.remove();
 
 	file.open(QIODevice::ReadWrite);
@@ -39,7 +39,7 @@ void SaverLoader::save(const MapFacadeSaveObject& object)
 
 MapFacadeSaveObject SaverLoader::load()
 {
-    QFile file("C:/Progs/Project_game/Map editor/map.txt");
+	QFile file("./../map.txt");
 	file.open(QIODevice::ReadWrite);
 
 	MapFacadeSaveObject result;
