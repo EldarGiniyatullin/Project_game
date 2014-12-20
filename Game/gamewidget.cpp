@@ -3,6 +3,8 @@
 GameWidget::GameWidget(QWidget *parent) :
     currentFractionsMove(RED),
     settedPersonage(nullptr),
+    redPlayer(PLAYER),
+    bluePlayer(COMPUTER),
     QWidget(parent)
 {
     editorLayout = new QHBoxLayout(this);
