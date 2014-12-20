@@ -8,6 +8,7 @@
 #include "mapfacade.h"
 #include "saverloader.h"
 
+enum Players {PLAYER, COMPUTER};
 
 class GameWidget : public QWidget
 {
@@ -26,6 +27,8 @@ public:
     void mousePressEvent(QMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
     Personage *fight(Personage *pers1, Personage *pers2);
+    PlayerIs redPlayer;
+    PlayerIs blueplayer;
 signals:
 
 public slots:
