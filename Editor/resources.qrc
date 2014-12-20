@@ -11,5 +11,6 @@
         <file>first_personage.png</file>
         <file>cross.png</file>
         <file>dot.png</file>
+        <file>blue_personage.png</file>
     </qresource>
 </RCC>

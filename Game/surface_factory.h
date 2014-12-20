@@ -35,7 +35,7 @@ public:
         currentType = type;
     }
 
+    SurfaceType currentType;
 protected:
     QMap<SurfaceType, SurfaceObject> map;
-    SurfaceType currentType;
 };

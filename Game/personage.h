@@ -2,29 +2,27 @@
 
 #include <QMap>
 #include <QList>
-#include <QObject>
 
 #include "map_object.h"
 #include "surface_object.h"
 
-enum Fraction {GREEN = 0, BLACK, WHITE, ORANGE, RED};
+enum Fraction {GREEN = 0, BLACK, WHITE, ORANGE, RED, BLUE};
 enum Speciality {WARRIOR = 0, WIZARD};
 
 
-class Personage : public QObject,  public MapObject
+class Personage : public MapObject
 {
-    Q_OBJECT
 public:
 
-    Personage() : QObject(), MapObject(QPixmap("://No_image.png")), persFraction(GREEN), persSpeciality(WARRIOR) {}
+    Personage() :  MapObject(QPixmap("://No_image.png")), persFraction(RED), persSpeciality(WARRIOR) {}
     Personage(QPixmap pixmap, Fraction frac, Speciality spec, int xPos, int yPos)
-        : QObject(), MapObject(pixmap),  persFraction(frac), persSpeciality(spec), xCoord(xPos), yCoord(yPos) {wayToGo.clear();}
+        : MapObject(pixmap),  persFraction(frac), persSpeciality(spec), xCoord(xPos), yCoord(yPos) {wayToGo.clear();}
 
     Personage(QPixmap pixmap, int vertDraw, int horizDraw, Fraction frac, Speciality spec)
-        : QObject(), MapObject(pixmap, vertDraw, horizDraw), persFraction(frac), persSpeciality(spec) {wayToGo.clear();}
-    Personage(QPixmap pixmap, Fraction frac, Speciality spec) : QObject(), MapObject(pixmap), persFraction(frac), persSpeciality(spec) {wayToGo.clear();}
-    Personage(PixmapItem *pixItem, Fraction frac, Speciality spec) : QObject(), MapObject(pixItem), persFraction(frac), persSpeciality(spec) {wayToGo.clear();}
-    Personage(const Personage& personageToCopy) : QObject(), MapObject(personageToCopy), persFraction(personageToCopy.persFraction),
+        :  MapObject(pixmap, vertDraw, horizDraw), persFraction(frac), persSpeciality(spec) {wayToGo.clear();}
+    Personage(QPixmap pixmap, Fraction frac, Speciality spec) :  MapObject(pixmap), persFraction(frac), persSpeciality(spec) {wayToGo.clear();}
+    Personage(PixmapItem *pixItem, Fraction frac, Speciality spec) :  MapObject(pixItem), persFraction(frac), persSpeciality(spec) {wayToGo.clear();}
+    Personage(const Personage& personageToCopy) :  MapObject(personageToCopy), persFraction(personageToCopy.persFraction),
         persSpeciality(personageToCopy.persSpeciality) {}
     ~Personage()
     {
@@ -32,12 +30,8 @@ public:
             delete wayDrawing[i];
     }
 
-    void setPos(int xPos, int yPos);
+    void setPersPos(int xPos, int yPos);
 
-    void moveTo(int xSquare, int ySquare)
-    {
-        emit moveMeToPosition(QPoint(xSquare, ySquare));
-    }
     QList<QPoint> personageWay()
     {
         return wayToGo;
@@ -120,9 +114,6 @@ public:
    {
        yCoord = value;
    }
-
-signals:
-   void moveMeToPosition(QPoint point);
 
 protected:
    Fraction persFraction;

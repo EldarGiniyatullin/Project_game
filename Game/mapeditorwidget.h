@@ -15,7 +15,7 @@
 
 #include "mapfacade.h"
 
-enum EditorState {SURFACE, PROP, REDPERSONAGE, BLUEPERSONAGE};
+enum EditorState {OTHER, SURFACE, PROP, PERSONAGE};
 
 
 class MapEditorWidget : public QWidget
@@ -28,8 +28,8 @@ public:
     EditorState state;
 
     MapFacade *editMap;
-    QHBoxLayout *editorLayout;
     QGridLayout *buttonsLayout;
+    QHBoxLayout *editorLayout;
     QPushButton *saveButton;
     QPushButton *loadButton;
 
@@ -41,8 +41,8 @@ public:
     QPushButton *swampButton;
     QPushButton *waterButton;
     QPushButton *rocksButton;
-    QPushButton *redPersButton;
-    QPushButton *bluePersButton;
+    QPushButton *persButton;
+    QPushButton *cursorButton;
 
     QSignalMapper *surfMapper;
     QSignalMapper *propMapper;
@@ -61,13 +61,13 @@ public slots:
         state = SURFACE;
         editMap->setSurfaceFactoryType(static_cast<SurfaceType>(typeNum));
     }
-    void changeToRedPersonage()
+    void changeToPersonage()
     {
-        state = REDPERSONAGE;
+        state = PERSONAGE;
     }
-    void changeToBluePersonage()
+    void changeToOther()
     {
-        state = BLUEPERSONAGE;
+        state = OTHER;
     }
     void saveMap()
     {

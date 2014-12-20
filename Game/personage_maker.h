@@ -13,7 +13,7 @@ public:
     ~PersonageMaker();
     Personage *makePers(Fraction frac, Speciality spec);
 protected:
-    QMap<Speciality, Personage> map;
+    QMap<Fraction, Personage> map;
 };
 
 

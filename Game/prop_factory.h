@@ -32,7 +32,7 @@ public:
         currentType = type;
     }
 
+    PropType currentType;
 protected:
     QMap<PropType, PropObject> map;
-    PropType currentType;
 };

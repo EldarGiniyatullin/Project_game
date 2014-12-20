@@ -12,6 +12,11 @@ public:
         delete scene;
     }
 
+    void addItem(QGraphicsItem *item)
+    {
+        this->scene->addItem(item);
+    }
+
 //protected:
     QGraphicsView *view;
     QGraphicsScene *scene;

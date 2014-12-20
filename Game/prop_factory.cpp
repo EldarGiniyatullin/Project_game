@@ -5,7 +5,10 @@
 PropObject *PropFactory::clone(qreal priority)
 {
     PropObject *newObj(this->clone());
-    newObj->setDrawingPriority(priority);
+    if (newObj)
+    {
+        newObj->setDrawingPriority(priority);
+    }
     return newObj;
 }
 
@@ -18,14 +21,16 @@ PropObject *PropFactory::clone()
 
 PropObject *PropFactory::clone(PropType type)
 {
-    PropObject *newObj(new PropObject(map.value(type)));
-    return newObj;
+    return ((type == NULLOBJECT) ? nullptr : new PropObject(map.value(type)));
 }
 
 
 PropObject *PropFactory::clone(PropType type, qreal priority)
 {
     PropObject *newObj(this->clone(type));
-    newObj->setDrawingPriority(priority);
+    if (newObj)
+    {
+        newObj->setDrawingPriority(priority);
+    }
     return newObj;
 }

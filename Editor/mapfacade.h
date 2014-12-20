@@ -78,6 +78,8 @@ public:
     QPointF squareCenter(QPoint point);
     void addPersonage(Personage *pers, int xCoord, int yCoord);
     void drawPersWay(Personage *pers);
+    void hidePersWay(Personage *pers);
+    bool checkPersWay(Personage *pers);
 //    void mousePressEvent(QMouseEvent *event);
 //    void keyPressEvent(QKeyEvent *event);
     QPoint globalToMapCoordinates(const QPoint& point)

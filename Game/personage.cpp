@@ -1,7 +1,7 @@
 #include "personage.h"
 
 
-void Personage::setPos(int xPos, int yPos)
+void Personage::setPersPos(int xPos, int yPos)
 {
     xCoord = xPos;
     yCoord = yPos;

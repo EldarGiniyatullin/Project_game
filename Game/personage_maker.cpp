@@ -4,8 +4,10 @@
 PersonageMaker::PersonageMaker(int squareSize)
 {
     map.clear();
-    QPixmap warrior("://first_personage.png");
-    map.insert(WARRIOR, Personage(warrior, warrior.width() / (-2), (squareSize / 2) - warrior.height(), GREEN, WARRIOR));
+    QPixmap warriorRed("://first_personage.png");
+    QPixmap warriorBlue("://blue_personage.png");
+    map.insert(RED, Personage(warriorRed, warriorRed.width() / (-2), (squareSize / 2) - warriorRed.height(), RED, WARRIOR));
+    map.insert(BLUE, Personage(warriorBlue, warriorBlue.width() / (-2), (squareSize / 2) - warriorBlue.height(), BLUE, WARRIOR));
 }
 
 PersonageMaker::~PersonageMaker()
@@ -15,7 +17,7 @@ PersonageMaker::~PersonageMaker()
 
 Personage *PersonageMaker::makePers(Fraction frac, Speciality spec)
 {
-    Personage *newPers(new Personage(map.value(spec)));
+    Personage *newPers(new Personage(map.value(frac)));
     newPers->setPersFraction(frac);
     return newPers;
 }

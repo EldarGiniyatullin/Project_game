@@ -22,6 +22,28 @@ public:
     {
         return this->objectPixmapItem->zValue();
     }
+    void setPixPos(qreal x, qreal y)
+    {
+        objectPixmapItem->setPos(x, y);
+    }
+
+    void setPixPos(const QPointF& point)
+    {
+        objectPixmapItem->setPos(point);
+    }
+
+    void setPixPos(qreal x, qreal y, qreal priority)
+    {
+        objectPixmapItem->setPos(x, y);
+        objectPixmapItem->setZValue(priority);
+    }
+
+    void setPixPos(const QPointF& point, qreal priority)
+    {
+        objectPixmapItem->setPos(point);
+        objectPixmapItem->setZValue(priority);
+    }
+
     PixmapItem *objectPixmapItem;
 };
 

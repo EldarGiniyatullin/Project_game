@@ -6,7 +6,7 @@
 #include "map_object.h"
 #include "surface_object.h"
 
-enum Fraction {GREEN = 0, BLACK, WHITE, ORANGE, RED};
+enum Fraction {GREEN = 0, BLACK, WHITE, ORANGE, RED, BLUE};
 enum Speciality {WARRIOR = 0, WIZARD};
 
 
@@ -14,7 +14,7 @@ class Personage : public MapObject
 {
 public:
 
-    Personage() :  MapObject(QPixmap("://No_image.png")), persFraction(GREEN), persSpeciality(WARRIOR) {}
+    Personage() :  MapObject(QPixmap("://No_image.png")), persFraction(RED), persSpeciality(WARRIOR) {}
     Personage(QPixmap pixmap, Fraction frac, Speciality spec, int xPos, int yPos)
         : MapObject(pixmap),  persFraction(frac), persSpeciality(spec), xCoord(xPos), yCoord(yPos) {wayToGo.clear();}
 

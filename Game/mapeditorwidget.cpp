@@ -41,10 +41,10 @@ MapEditorWidget::MapEditorWidget(QWidget *parent) :
 
     QLabel *label3 = new QLabel("Some stuff");
     buttonsLayout->addWidget(label3, 6, 0);
-    redPersButton = new QPushButton("Red personage");
-    buttonsLayout->addWidget(redPersButton, 7, 0);
-    bluePersButton = new QPushButton("Blue personage");
-    buttonsLayout->addWidget(bluePersButton, 7, 1);
+    persButton = new QPushButton("Personage");
+    buttonsLayout->addWidget(persButton, 7, 0);
+    cursorButton = new QPushButton("Cursor");
+    buttonsLayout->addWidget(cursorButton, 7, 1);
 
     QLabel *label4 = new QLabel("Save/Load");
     buttonsLayout->addWidget(label4, 8, 0);
@@ -54,7 +54,7 @@ MapEditorWidget::MapEditorWidget(QWidget *parent) :
     buttonsLayout->addWidget(loadButton, 9, 1);
 
 
-    state = PROP;
+    state = OTHER;
 
 
     surfMapper = new QSignalMapper(this);
@@ -81,8 +81,8 @@ MapEditorWidget::MapEditorWidget(QWidget *parent) :
     surfMapper->setMapping(swampButton, 5);
     connect(surfMapper, SIGNAL(mapped(int)), this, SLOT(changeToSurface(int)));
 
-    connect(redPersButton, SIGNAL(clicked()), this, SLOT(changeToRedPersonage()));
-    connect(bluePersButton, SIGNAL(clicked()), this, SLOT(changeToBluePersonage()));
+    connect(persButton, SIGNAL(clicked()), this, SLOT(changeToPersonage()));
+    connect(cursorButton, SIGNAL(clicked()), this, SLOT(changeToOther()));
 
     connect(saveButton, SIGNAL(clicked()), this, SLOT(saveMap()));
     connect(loadButton, SIGNAL(clicked()), this, SLOT(loadMap()));
@@ -104,8 +104,8 @@ MapEditorWidget::~MapEditorWidget()
     delete swampButton;
     delete waterButton;
     delete rocksButton;
-    delete redPersButton;
-    delete bluePersButton;
+    delete persButton;
+    delete cursorButton;
 
     delete surfMapper;
     delete propMapper;
@@ -125,11 +125,10 @@ void MapEditorWidget::mousePressEvent(QMouseEvent *event)
             case SURFACE:
                 editMap->addSurfaceFromMouse(event);
                 break;
-            case REDPERSONAGE:
-                editMap->addPersonageFromMouse(event, RED, WARRIOR);
+            case PERSONAGE:
+                editMap->addPersonageFromMouse(event, GREEN, WARRIOR);
                 break;
-            case BLUEPERSONAGE:
-                editMap->addPersonageFromMouse(event, BLUE, WARRIOR);
+            case OTHER:
                 break;
             default:
                 break;

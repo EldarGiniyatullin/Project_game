@@ -18,7 +18,7 @@ public:
         horizCorr(pixItem.horizCorr){}
     ~PixmapItem()
     {
-        qDebug() << "PixmapItem deleted";
+//        qDebug() << "PixmapItem deleted";
     }
 
     void setCorr(int x, int y)
@@ -29,7 +29,7 @@ public:
     void setPos(qreal x, qreal y)
     {
         QGraphicsPixmapItem::setPos(x + vertCorr, y + horizCorr);
-        qDebug() << x + vertCorr << " " << y + horizCorr;
+//        qDebug() << x + vertCorr << " " << y + horizCorr;
     }
     void setPos(const QPointF &pos)
     {
@@ -39,9 +39,3 @@ protected:
     int vertCorr;
     int horizCorr;
 };
-
-
-
-
-
-

@@ -100,9 +100,9 @@ MapFacade::~MapFacade()
 
 bool MapFacade::checkPassabilityOfSquare(int xCoord, int yCoord)
 {
-    qDebug() << xCoord << " " << yCoord <<  " " << "Passability = " << (surMap->objectAt(xCoord, yCoord)->getIsPassable() && (prMap->objectAt(xCoord, yCoord) ? prMap->objectAt(xCoord, yCoord)->getIsPassable() : true));
+    qDebug() << xCoord << " " << yCoord <<  " " << "Passability = " << (surMap->objectAt(xCoord, yCoord)->getIsPassable() && (prMap->objectAt(xCoord, yCoord) ? prMap->objectAt(xCoord, yCoord)->getIsPassable() : true) && !personageAt(QPoint(xCoord, yCoord)));
     //----------------------------------------------------------------------------------------------------------------------------------
-    return (surMap->objectAt(xCoord, yCoord)->getIsPassable() && (prMap->objectAt(xCoord, yCoord) ? prMap->objectAt(xCoord, yCoord)->getIsPassable() : true));
+    return (surMap->objectAt(xCoord, yCoord)->getIsPassable() && (prMap->objectAt(xCoord, yCoord) ? prMap->objectAt(xCoord, yCoord)->getIsPassable() : true) && !personageAt(QPoint(xCoord, yCoord)));
     //----------------------------------------------------------------------------------------------------------------------------------
 }
 
@@ -188,6 +188,24 @@ void MapFacade::drawPersWay(Personage *pers)
         mapScene->scene->addItem(pers->getWayDrawning()[i]);
         pers->getWayDrawning()[i]->setPos(squareCenter(pers->getWayToGo()[i]));
     }
+}
+
+void MapFacade::hidePersWay(Personage *pers)
+{
+    for (int i = 0; i < pers->getWayDrawning().size(); i++)
+    {
+        mapScene->scene->removeItem(pers->getWayDrawning()[i]);
+    }
+}
+
+bool MapFacade::checkPersWay(Personage *pers)
+{
+    for (int i = 0; i < pers->getWayToGo().size(); i++)
+    {
+        if (!checkPassabilityOfSquare(pers->getWayToGo()[i]))
+            return false;
+    }
+    return true;
 }
 
 //void MapFacade::mousePressEvent(QMouseEvent *event)

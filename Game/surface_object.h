@@ -3,7 +3,7 @@
 #include <QPixmap>
 #include "map_object.h"
 
-enum SurfaceType {NOIMAGE = 0, FIELD, ROAD, WATER, ROCKS, /*SAND, BURNED,*/ SWAMP};
+enum SurfaceType {NOIMAGE = 0, FIELD, ROAD, WATER, ROCKS, SWAMP /*, SAND, BURNED*/ };
 
 class SurfaceObject : public MapObject
 {
@@ -53,6 +53,7 @@ public:
     {
         return type;
     }
+
 
 protected:
     bool isPassable;
