@@ -8,7 +8,7 @@
 #include "mapfacade.h"
 #include "saverloader.h"
 
-enum Players {PLAYER, COMPUTER};
+enum PlayerIs{PLAYER, COMPUTER};
 
 class GameWidget : public QWidget
 {
