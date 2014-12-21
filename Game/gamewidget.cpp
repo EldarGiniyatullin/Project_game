@@ -156,7 +156,7 @@ void GameWidget::playBot(Fraction frac)
 	if ((*enemy)->getPersFraction() == frac)
 		return;
 
-	while (numberOfBLues() != 0 && numberOfReds() != 0 && (*enemy)->getPersFraction() != frac && (*bot)->getPersFraction() == frac)
+	while (numberOfBLues() > 0 && numberOfReds() > 0 && (*bot) != nullptr && (*enemy) != nullptr && (*enemy)->getPersFraction() != frac && (*bot)->getPersFraction() == frac)
 	{
 		gameMap->buildWay((*bot), QPoint((*enemy)->getXCoord(), (*enemy)->getYCoord()));
 
@@ -170,46 +170,43 @@ void GameWidget::playBot(Fraction frac)
 			if ((*enemy) == this->gameMap->listOfPersonages.last())
 				return;
 
-			++enemy;
-			for (enemy; enemy != this->gameMap->listOfPersonages.end(); ++enemy)
+			QList<Personage*>::Iterator tempEnemy = this->gameMap->listOfPersonages.begin();
+			for (tempEnemy; tempEnemy != this->gameMap->listOfPersonages.end(); ++tempEnemy)
 			{
-				if ((*enemy)->getPersFraction() != frac)
+				if ((*enemy)->getPersFraction() != frac && enemy !=tempEnemy)
 					break;
-
-				if ((*enemy)->getPersFraction() == frac)
-					return;
 			}
+
+			if ((*tempEnemy)->getPersFraction() == frac || tempEnemy == enemy)
+				return;
+			else
+				enemy = tempEnemy;
 
 			continue;
 		}
 
-
-		if (loser == this->gameMap->listOfPersonages.last())
+		if (loser == (*bot) && loser == this->gameMap->listOfPersonages.last())
 		{
 			deletePersonage(loser);
 			return;
 		}
 
-		if (loser != (*bot))
+		if ((*bot) == this->gameMap->listOfPersonages.last())
 		{
-			if (numberOfReds() == 1)
+			deletePersonage(loser);
+			return;
+		}
+
+		if (loser == (*bot) && numberOfBLues() == 1)
+		{
 			{
 				deletePersonage(loser);
 				return;
 			}
-
-			deletePersonage(loser);
-			for (enemy = this->gameMap->listOfPersonages.begin(); enemy != this->gameMap->listOfPersonages.end(); ++enemy)
-			{
-				if (((*enemy)->getPersFraction() != frac))
-					break;
-			}
-
-			return;
 		}
-		else
+
+		if (loser == (*enemy) && numberOfReds() == 1)
 		{
-			if (numberOfBLues() == 1)
 			{
 				deletePersonage(loser);
 				return;
@@ -227,6 +224,21 @@ void GameWidget::playBot(Fraction frac)
 		{
 			deletePersonage(loser);
 			return;
+		}
+
+		if (loser == (*enemy))
+		{
+			deletePersonage(loser);
+			for (enemy = this->gameMap->listOfPersonages.begin(); enemy != this->gameMap->listOfPersonages.end(); ++enemy)
+			{
+				if (((*enemy)->getPersFraction() != frac))
+					break;
+			}
+
+			if ((*enemy)->getPersFraction() == frac)
+				return;
+
+			continue;
 		}
 
 		deletePersonage(loser);
