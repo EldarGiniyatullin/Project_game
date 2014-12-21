@@ -33,9 +33,10 @@ GameWidget::GameWidget(QWidget *parent) :
 
     connect(loadButton, SIGNAL(clicked()), this, SLOT(loadMap()));
     connect(saveButton, SIGNAL(clicked()), this, SLOT(saveMap()));
-
+//    connect(moveButton, SIGNAL(clicked()), this, SLOT());
     connect(playButton, SIGNAL(clicked()), this, SLOT(startPlay()));
     connect(this, SIGNAL(winnerIs(Fraction)), this, SLOT(winner(Fraction)));
+
 }
 
 void GameWidget::winner(Fraction frac)
@@ -87,6 +88,7 @@ void GameWidget::mousePressEvent(QMouseEvent *event)
 
 void GameWidget::keyPressEvent(QKeyEvent *event)
 {
+    buttonsLayout->setEnabled(false);
     Personage *pers = nullptr;
     if (event->key() == Qt::Key_Space && (currentPlayer == PLAYER) && settedPersonage)
     {
@@ -99,6 +101,7 @@ void GameWidget::keyPressEvent(QKeyEvent *event)
             fight(settedPersonage, pers);
         }
     }
+    buttonsLayout->setEnabled(false);
 }
 
 Personage *GameWidget::fight(Personage *pers1, Personage *pers2)

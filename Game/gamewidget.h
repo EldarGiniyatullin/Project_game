@@ -49,6 +49,8 @@ public slots:
         if (gameMap)
             delete gameMap;
         gameMap = new MapFacade(saveObj, 29, this);
+        this->settedPersonage = nullptr;
+        this->currentFractionsMove = RED;
         this->gameMap->show();
         gameMap->getView()->show();
     }
