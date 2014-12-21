@@ -118,23 +118,24 @@ void GameWidget::playBot(Fraction frac)
         gameMap->buildWay((*bot), QPoint((*enemy)->getXCoord(), (*enemy)->getYCoord()));
         if ((*bot)->getWayToGo().size() != 0)
         {
+            gameMap->movePersonage((*bot));
             loser = fight(*bot, *enemy);
         }
-        if (loser = (*bot))
-        {
+//        if (loser = (*bot))
+//        {
             if (bot != this->gameMap->listOfPersonages.end())
                 bot++;
             while ((*bot)->getPersFraction() != frac && bot != this->gameMap->listOfPersonages.end())
                 bot++;
-        }
-        else
-        {
+//        }
+//        else
+//        {
             if (enemy != this->gameMap->listOfPersonages.end())
                 enemy++;
             while ((*enemy)->getPersFraction() == frac && bot != this->gameMap->listOfPersonages.end())
                 enemy++;
-        }
-        //        deletePersonage(loser);
+//        }
+//                deletePersonage(loser);
 
     }
     if ((*bot)->getPersFraction() != frac)
@@ -163,6 +164,7 @@ void GameWidget::nextMove()
         gameMap->setEnabled(false);
         buttonsLayout->setEnabled(false);
         playBot(currentFractionsMove);
+
         gameMap->setEnabled(true);
         buttonsLayout->setEnabled(true);
     }
