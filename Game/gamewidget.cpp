@@ -100,8 +100,13 @@ void GameWidget::keyPressEvent(QKeyEvent *event)
 
 Personage *GameWidget::fight(Personage *pers1, Personage *pers2)
 {
+	Widget w(pers1, pers2);
+	w.show();
+	if (pers1->getHP() <= 0)
+		return pers1;
+	else return pers2;
 	//    Personage *bluePers = (pers1->getPersFraction() == BLUE ? pers1 : pers2);
-	return (rand() % 2 == 0 ? pers1 : pers2);
+	//return (rand() % 2 == 0 ? pers1 : pers2);
 }
 
 int GameWidget::numberOfReds()

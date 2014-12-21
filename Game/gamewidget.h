@@ -7,6 +7,7 @@
 #include <QPushButton>
 #include "mapfacade.h"
 #include "saverloader.h"
+#include <widget.h>
 
 enum PlayerIs{PLAYER, COMPUTER};
 

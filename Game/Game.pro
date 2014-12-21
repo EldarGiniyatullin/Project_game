@@ -23,7 +23,8 @@ SOURCES += main.cpp \
     personage_maker.cpp \
     surface_map.cpp \
     saverloader.cpp \
-    gamewidget.cpp
+    gamewidget.cpp \
+    widget.cpp
 
 HEADERS  += \
     map_object.h \
@@ -40,10 +41,12 @@ HEADERS  += \
     surface_factory.h \
     personage_maker.h \
     saverloader.h \
-    gamewidget.h
+    gamewidget.h \
+    widget.h
 
 FORMS    += \
-    mapfacade.ui
+    mapfacade.ui \
+    widget.ui
 
 RESOURCES += \
     resources.qrc
