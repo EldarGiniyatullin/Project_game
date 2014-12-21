@@ -101,11 +101,40 @@ void GameWidget::keyPressEvent(QKeyEvent *event)
 Personage *GameWidget::fight(Personage *pers1, Personage *pers2)
 {
 	//    Personage *bluePers = (pers1->getPersFraction() == BLUE ? pers1 : pers2);
-	return (rand() % 4 == 0 ? pers1 : pers2);
+	return (rand() % 2 == 0 ? pers1 : pers2);
+}
+
+int GameWidget::numberOfReds()
+{
+	int result = 0;
+	QList<Personage*>::Iterator i = this->gameMap->listOfPersonages.begin();
+	for (i; i != this->gameMap->listOfPersonages.end(); ++i)
+	{
+		if ((*i)->getPersFraction() == RED)
+			result++;
+	}
+
+	return result;
+}
+
+int GameWidget::numberOfBLues()
+{
+	int result = 0;
+	QList<Personage*>::Iterator i = this->gameMap->listOfPersonages.begin();
+	for (; i != this->gameMap->listOfPersonages.end(); ++i)
+	{
+		if ((*i)->getPersFraction() == BLUE)
+			result++;
+	}
+
+	return result;
 }
 
 void GameWidget::playBot(Fraction frac)
 {
+	if (numberOfBLues() == 0 || numberOfReds() == BLUE)
+		return;
+
 	Personage *loser = nullptr;
 
 	QList<Personage*>::Iterator bot = this->gameMap->listOfPersonages.begin();
@@ -127,19 +156,35 @@ void GameWidget::playBot(Fraction frac)
 	if ((*enemy)->getPersFraction() == frac)
 		return;
 
-	while(bot != this->gameMap->listOfPersonages.end() && enemy != this->gameMap->listOfPersonages.end())
+	while (numberOfBLues() != 0 && numberOfReds() != 0 && (*enemy)->getPersFraction() != frac && (*bot)->getPersFraction() == frac)
 	{
 		gameMap->buildWay((*bot), QPoint((*enemy)->getXCoord(), (*enemy)->getYCoord()));
+
 		if ((*bot)->getWayToGo().size() != 0)
 		{
 			gameMap->movePersonage((*bot));
 			loser = fight(*bot, *enemy);
 		}
+		else
+		{
+			if ((*enemy) == this->gameMap->listOfPersonages.last())
+				return;
 
-		if (loser != (*bot) && loser != (*enemy))
-			return;
+			++enemy;
+			for (enemy; enemy != this->gameMap->listOfPersonages.end(); ++enemy)
+			{
+				if ((*enemy)->getPersFraction() != frac)
+					break;
 
-		if (bot == this->gameMap->listOfPersonages.end() || enemy == this->gameMap->listOfPersonages.end())
+				if ((*enemy)->getPersFraction() == frac)
+					return;
+			}
+
+			continue;
+		}
+
+
+		if (loser == this->gameMap->listOfPersonages.last())
 		{
 			deletePersonage(loser);
 			return;
@@ -147,25 +192,42 @@ void GameWidget::playBot(Fraction frac)
 
 		if (loser != (*bot))
 		{
-			++enemy;
-			for (enemy; enemy != this->gameMap->listOfPersonages.end(); ++enemy)
+			if (numberOfReds() == 1)
 			{
-				if ((*enemy)->getPersFraction() != frac)
+				deletePersonage(loser);
+				return;
+			}
+
+			deletePersonage(loser);
+			for (enemy = this->gameMap->listOfPersonages.begin(); enemy != this->gameMap->listOfPersonages.end(); ++enemy)
+			{
+				if (((*enemy)->getPersFraction() != frac))
 					break;
+			}
+
+			return;
+		}
+		else
+		{
+			if (numberOfBLues() == 1)
+			{
+				deletePersonage(loser);
+				return;
 			}
 		}
 
 		++bot;
 		for (bot; bot != this->gameMap->listOfPersonages.end(); ++bot)
 		{
-			if ((*bot)->getPersFraction() == frac)
+			if ((*bot)->getPersFraction() == frac && ((*bot) != loser))
 				break;
 		}
 
-		if ((*bot)->getPersFraction() != frac)
+		if (((*bot)->getPersFraction() != frac) || ((*bot) == loser))
+		{
+			deletePersonage(loser);
 			return;
-		if ((*enemy)->getPersFraction() == frac)
-			return;
+		}
 
 		deletePersonage(loser);
 	}
@@ -185,16 +247,21 @@ PlayerIs GameWidget::getPlayerIs(Fraction frac)
 
 void GameWidget::nextMove()
 {
-	currentFractionsMove = (currentFractionsMove == RED ? BLUE : RED);
-	if (getPlayerIs(currentFractionsMove) == COMPUTER)
+	if (numberOfBLues() != 0)
 	{
-		gameMap->setEnabled(false);
-		buttonsLayout->setEnabled(false);
-		playBot(currentFractionsMove);
+		currentFractionsMove = (currentFractionsMove == RED ? BLUE : RED);
+		if (getPlayerIs(currentFractionsMove) == COMPUTER)
+		{
+			gameMap->setEnabled(false);
+			buttonsLayout->setEnabled(false);
+			playBot(currentFractionsMove);
 
-		gameMap->setEnabled(true);
-		buttonsLayout->setEnabled(true);
+			gameMap->setEnabled(true);
+			buttonsLayout->setEnabled(true);
+		}
 	}
+
+	currentFractionsMove = RED;
 }
 
 void attackEnemy(Personage *pers)

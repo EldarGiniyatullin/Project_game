@@ -33,6 +33,9 @@ public:
     void playBot(Fraction frac);
     void deletePersonage(Personage *pers);
     PlayerIs getPlayerIs(Fraction frac);
+	int numberOfReds();
+	int numberOfBLues();
+
 signals:
     void winnerIs(Fraction frac);
 public slots:
