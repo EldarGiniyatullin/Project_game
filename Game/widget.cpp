@@ -24,6 +24,7 @@ Widget::Widget(Personage *player, Personage *bot, QWidget *parent) :
 	connect(this, SIGNAL(showed(Personage *, Personage *)), this, SLOT(battle(Personage *, Personage *)));
 
 	emit showed(player, bot);
+	delay();
 }
 
 void Widget::battle(Personage *player, Personage *bot)
@@ -83,8 +84,15 @@ void Widget::battle(Personage *player, Personage *bot)
 		player->setHP(player->getHP() - random2);
 		playerHP->setValue(player->getHP());
 
+		if (player->getHP() < 0)
+		{
+			playerHP->setValue(0);
+			break;
+		}
+
 		delay();
 	}
+	delay();
 }
 
 Widget::~Widget()

@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Widget</string>
+   <string>Battle</string>
   </property>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

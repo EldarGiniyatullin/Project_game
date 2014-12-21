@@ -8,6 +8,7 @@
 #include <QTime>
 #include <time.h>
 #include <QProgressBar>
+#include <QMessageBox>
 
 #include "personage.h"
 

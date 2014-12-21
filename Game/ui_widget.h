@@ -36,7 +36,7 @@ public:
 
     void retranslateUi(QWidget *Widget)
     {
-        Widget->setWindowTitle(QApplication::translate("Widget", "Widget", 0));
+        Widget->setWindowTitle(QApplication::translate("Widget", "Battle", 0));
     } // retranslateUi
 
 };

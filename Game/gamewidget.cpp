@@ -40,7 +40,10 @@ GameWidget::GameWidget(QWidget *parent) :
 
 void GameWidget::winner(Fraction frac)
 {
-
+	if (frac == BLUE)
+		QMessageBox::information(this, "Condolences", "You lose. Now you can endlessly explore this map using AI personages, create or load another one");
+	else
+		QMessageBox::information(this, "Congratulations", "You win. Now you can create or load another one");
 }
 
 void GameWidget::mousePressEvent(QMouseEvent *event)
@@ -102,11 +105,10 @@ Personage *GameWidget::fight(Personage *pers1, Personage *pers2)
 {
 	Widget w(pers1, pers2);
 	w.show();
+
 	if (pers1->getHP() <= 0)
 		return pers1;
 	else return pers2;
-	//    Personage *bluePers = (pers1->getPersFraction() == BLUE ? pers1 : pers2);
-	//return (rand() % 2 == 0 ? pers1 : pers2);
 }
 
 int GameWidget::numberOfReds()
@@ -255,6 +257,19 @@ void GameWidget::deletePersonage(Personage *pers)
 	if (settedPersonage == pers)
 		settedPersonage = nullptr;
 	gameMap->deletePersonage(pers);
+
+	Fraction temp;
+	if (numberOfBLues() == 0)
+	{
+		temp = RED;
+		emit winnerIs(temp);
+	}
+
+	if (numberOfReds() == 0)
+	{
+		temp = BLUE;
+		emit winnerIs(temp);
+	}
 }
 
 PlayerIs GameWidget::getPlayerIs(Fraction frac)
