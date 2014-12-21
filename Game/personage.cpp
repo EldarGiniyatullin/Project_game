@@ -12,3 +12,13 @@ Personage &Personage::operator=(const Personage &pers)
     Personage temp(pers);
     return temp;
 }
+
+int Personage::getHP()
+{
+	return hp;
+}
+
+void Personage::setHP(int hp)
+{
+	this->hp = hp;
+}

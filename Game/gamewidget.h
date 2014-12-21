@@ -23,7 +23,6 @@ public:
     QPushButton *saveButton;
     QPushButton *loadButton;
     QPushButton *moveButton;
-    QPushButton *playButton;
     Personage *settedPersonage;
     void mousePressEvent(QMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
@@ -31,10 +30,13 @@ public:
     PlayerIs redPlayer;
     PlayerIs bluePlayer;
     PlayerIs currentPlayer;
+    void playBot(Fraction frac);
+    void deletePersonage(Personage *pers);
+    PlayerIs getPlayerIs(Fraction frac);
 signals:
     void winnerIs(Fraction frac);
 public slots:
-    void startPlay();
+    void nextMove();
     void winner(Fraction frac);
     void saveMap()
     {
@@ -49,6 +51,8 @@ public slots:
         if (gameMap)
             delete gameMap;
         gameMap = new MapFacade(saveObj, 29, this);
+        this->settedPersonage = nullptr;
+        this->currentFractionsMove = RED;
         this->gameMap->show();
         gameMap->getView()->show();
     }
