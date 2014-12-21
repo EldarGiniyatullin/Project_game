@@ -14,113 +14,118 @@ class Personage : public MapObject
 {
 public:
 
-    Personage() :  MapObject(QPixmap("://No_image.png")), persFraction(RED), persSpeciality(WARRIOR) {}
-    Personage(QPixmap pixmap, Fraction frac, Speciality spec, int xPos, int yPos)
-        : MapObject(pixmap),  persFraction(frac), persSpeciality(spec), xCoord(xPos), yCoord(yPos) {wayToGo.clear();}
+    Personage() :  MapObject(QPixmap("://No_image.png")), persFraction(RED), persSpeciality(WARRIOR), hp(1000) {}
+	Personage(QPixmap pixmap, Fraction frac, Speciality spec, int xPos, int yPos)
+        : MapObject(pixmap),  persFraction(frac), persSpeciality(spec), xCoord(xPos), yCoord(yPos), hp(1000) {wayToGo.clear();}
 
-    Personage(QPixmap pixmap, int vertDraw, int horizDraw, Fraction frac, Speciality spec)
-        :  MapObject(pixmap, vertDraw, horizDraw), persFraction(frac), persSpeciality(spec) {wayToGo.clear();}
-    Personage(QPixmap pixmap, Fraction frac, Speciality spec) :  MapObject(pixmap), persFraction(frac), persSpeciality(spec) {wayToGo.clear();}
-    Personage(PixmapItem *pixItem, Fraction frac, Speciality spec) :  MapObject(pixItem), persFraction(frac), persSpeciality(spec) {wayToGo.clear();}
-    Personage(const Personage& personageToCopy) :  MapObject(personageToCopy), persFraction(personageToCopy.persFraction),
-        persSpeciality(personageToCopy.persSpeciality) {}
-    ~Personage()
-    {
-        for (int i = 0; i < wayDrawing.size(); i++)
-            delete wayDrawing[i];
-    }
+	Personage(QPixmap pixmap, int vertDraw, int horizDraw, Fraction frac, Speciality spec)
+        :  MapObject(pixmap,  vertDraw, horizDraw), persFraction(frac), persSpeciality(spec), hp(1000) {wayToGo.clear();}
+    Personage(QPixmap pixmap, Fraction frac, Speciality spec) :  MapObject(pixmap), persFraction(frac), persSpeciality(spec), hp(1000) {wayToGo.clear();}
+    Personage(PixmapItem *pixItem, Fraction frac, Speciality spec) :  MapObject(pixItem), persFraction(frac), persSpeciality(spec),  hp(1000) {wayToGo.clear();}
+    Personage(const Personage& personageToCopy) : hp(1000), MapObject(personageToCopy), persFraction(personageToCopy.persFraction),
+		persSpeciality(personageToCopy.persSpeciality) {}
 
-    void setPersPos(int xPos, int yPos);
+	~Personage()
+	{
+		for (int i = 0; i < wayDrawing.size(); i++)
+			delete wayDrawing[i];
+	}
 
-    QList<QPoint> personageWay()
-    {
-        return wayToGo;
-    }
-    QPoint currentPos()
-    {
-        return QPoint(xCoord, yCoord);
-    }
+	void setPersPos(int xPos, int yPos);
+	int getHP();
+	void setHP(int hp);
 
-    Speciality getPersSpeciality() const
-    {
-        return persSpeciality;
-    }
-    void setPersSpeciality(const Speciality &value)
-    {
-        persSpeciality = value;
-    }
+	QList<QPoint> personageWay()
+	{
+		return wayToGo;
+	}
 
-    Fraction getPersFraction() const
-    {
-        return persFraction;
-    }
-    void setPersFraction(const Fraction &value)
-    {
-        persFraction = value;
-    }
+	QPoint currentPos()
+	{
+		return QPoint(xCoord, yCoord);
+	}
+
+	Speciality getPersSpeciality() const
+	{
+		return persSpeciality;
+	}
+	void setPersSpeciality(const Speciality &value)
+	{
+		persSpeciality = value;
+	}
+
+	Fraction getPersFraction() const
+	{
+		return persFraction;
+	}
+	void setPersFraction(const Fraction &value)
+	{
+		persFraction = value;
+	}
 
 
-   Personage &operator=(const Personage &pers);
+	Personage &operator=(const Personage &pers);
 
-   QList<QPoint> &getWayToGo()
-   {
-       return wayToGo;
-   }
-   void clearWayToGo()
-   {
-       wayToGo.clear();
-       while (!wayDrawing.isEmpty())
-       {
-           delete wayDrawing.takeFirst();
-       }
-   }
+	QList<QPoint> &getWayToGo()
+	{
+		return wayToGo;
+	}
+	void clearWayToGo()
+	{
+		wayToGo.clear();
+		while (!wayDrawing.isEmpty())
+		{
+			delete wayDrawing.takeFirst();
+		}
+	}
 
-   QList<PixmapItem*> &getWayDrawning()
-   {
-       return wayDrawing;
-   }
-   void clearWayDrawning()
-   {
-       wayDrawing.clear();
-   }
-   void buildWayDrawning()
-   {
-       if (!wayToGo.isEmpty())
-       {
-           for (int i = 0; i < wayToGo.size() - 1; i++)
-           {
-                wayDrawing.append(new PixmapItem(QPixmap("://dot.png")));
-                wayDrawing.last()->setZValue(100);
-           }
-           wayDrawing.append(new PixmapItem(QPixmap("://cross.png")));
-           wayDrawing.last()->setZValue(100);
-       }
-   }
+	QList<PixmapItem*> &getWayDrawning()
+	{
+		return wayDrawing;
+	}
+	void clearWayDrawning()
+	{
+		wayDrawing.clear();
+	}
+	void buildWayDrawning()
+	{
+		if (!wayToGo.isEmpty())
+		{
+			for (int i = 0; i < wayToGo.size() - 1; i++)
+			{
+				wayDrawing.append(new PixmapItem(QPixmap("://dot.png")));
+				wayDrawing.last()->setZValue(100);
+			}
+			wayDrawing.append(new PixmapItem(QPixmap("://cross.png")));
+			wayDrawing.last()->setZValue(100);
+		}
+	}
 
-   int getXCoord() const
-   {
-       return xCoord;
-   }
-   void setXCoord(int value)
-   {
-       xCoord = value;
-   }
+	int getXCoord() const
+	{
+		return xCoord;
+	}
+	void setXCoord(int value)
+	{
+		xCoord = value;
+	}
 
-   int getYCoord() const
-   {
-       return yCoord;
-   }
-   void setYCoord(int value)
-   {
-       yCoord = value;
-   }
+	int getYCoord() const
+	{
+		return yCoord;
+	}
+	void setYCoord(int value)
+	{
+		yCoord = value;
+	}
 
 protected:
-   Fraction persFraction;
-    Speciality persSpeciality;
-    int xCoord;
-    int yCoord;
-    QList<QPoint> wayToGo;
-    QList<PixmapItem*> wayDrawing;
+	Fraction persFraction;
+	Speciality persSpeciality;
+	int xCoord;
+	int yCoord;
+	QList<QPoint> wayToGo;
+	QList<PixmapItem*> wayDrawing;
+	int hp;
 
 };
