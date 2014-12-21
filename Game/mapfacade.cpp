@@ -102,7 +102,7 @@ bool MapFacade::checkPassabilityOfSquare(int xCoord, int yCoord)
 {
     qDebug() << xCoord << " " << yCoord <<  " " << "Passability = " << (surMap->objectAt(xCoord, yCoord)->getIsPassable() && (prMap->objectAt(xCoord, yCoord) ? prMap->objectAt(xCoord, yCoord)->getIsPassable() : true) && !personageAt(QPoint(xCoord, yCoord)));
     //----------------------------------------------------------------------------------------------------------------------------------
-    return (surMap->objectAt(xCoord, yCoord)->getIsPassable() && (prMap->objectAt(xCoord, yCoord) ? prMap->objectAt(xCoord, yCoord)->getIsPassable() : true) && !personageAt(QPoint(xCoord, yCoord)));
+    return (surMap->objectAt(xCoord, yCoord)->getIsPassable() && (prMap->objectAt(xCoord, yCoord) ? prMap->objectAt(xCoord, yCoord)->getIsPassable() : true)/* && !personageAt(QPoint(xCoord, yCoord))*/);
     //----------------------------------------------------------------------------------------------------------------------------------
 }
 

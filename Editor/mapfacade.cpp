@@ -102,7 +102,7 @@ bool MapFacade::checkPassabilityOfSquare(int xCoord, int yCoord)
 {
     qDebug() << xCoord << " " << yCoord <<  " " << "Passability = " << (surMap->objectAt(xCoord, yCoord)->getIsPassable() && (prMap->objectAt(xCoord, yCoord) ? prMap->objectAt(xCoord, yCoord)->getIsPassable() : true) && !personageAt(QPoint(xCoord, yCoord)));
     //----------------------------------------------------------------------------------------------------------------------------------
-    return (surMap->objectAt(xCoord, yCoord)->getIsPassable() && (prMap->objectAt(xCoord, yCoord) ? prMap->objectAt(xCoord, yCoord)->getIsPassable() : true) && !personageAt(QPoint(xCoord, yCoord)));
+    return (surMap->objectAt(xCoord, yCoord)->getIsPassable() && (prMap->objectAt(xCoord, yCoord) ? prMap->objectAt(xCoord, yCoord)->getIsPassable() : true)/* && !personageAt(QPoint(xCoord, yCoord))*/);
     //----------------------------------------------------------------------------------------------------------------------------------
 }
 
@@ -269,6 +269,8 @@ void MapFacade::addPersonageFromMouse(QMouseEvent *event, Fraction frac, Special
 {
     Personage *pers = persMaker.makePers(frac, spec);
     QPoint point = globalToMapCoordinates(event->pos());
+    if (personageAt(point))
+        deletePersonage(personageAt(point));
     pers->setPersPos(point.x(), point.y());
     this->addPersonage(pers, point.x(), point.y());
 }
