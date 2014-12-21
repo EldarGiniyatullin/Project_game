@@ -6,6 +6,8 @@
 #include <QString>
 #include <QLabel>
 #include <QTime>
+#include <time.h>
+#include <QProgressBar>
 
 #include "personage.h"
 
@@ -29,4 +31,5 @@ public slots:
 
 private:
 	Ui::Widget *ui;
+
 };
