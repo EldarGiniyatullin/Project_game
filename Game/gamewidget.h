@@ -3,7 +3,7 @@
 #include <QWidget>
 #include <QMouseEvent>
 #include <QGridLayout>
-#include  <QHBoxLayout>
+#include <QHBoxLayout>
 #include <QPushButton>
 #include "mapfacade.h"
 #include "saverloader.h"
@@ -22,16 +22,20 @@ public:
     QGridLayout *buttonsLayout;
     QPushButton *saveButton;
     QPushButton *loadButton;
-    QPushButton *makeMove;
+    QPushButton *moveButton;
+    QPushButton *playButton;
     Personage *settedPersonage;
     void mousePressEvent(QMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
     Personage *fight(Personage *pers1, Personage *pers2);
     PlayerIs redPlayer;
-    PlayerIs blueplayer;
+    PlayerIs bluePlayer;
+    PlayerIs currentPlayer;
 signals:
-
+    void winnerIs(Fraction frac);
 public slots:
+    void startPlay();
+    void winner(Fraction frac);
     void saveMap()
     {
         MapFacadeSaveObject saveObj = gameMap->saveToObject();

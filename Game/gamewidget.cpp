@@ -5,6 +5,7 @@ GameWidget::GameWidget(QWidget *parent) :
     settedPersonage(nullptr),
     redPlayer(PLAYER),
     bluePlayer(COMPUTER),
+    currentPlayer(redPlayer),
     QWidget(parent)
 {
     editorLayout = new QHBoxLayout(this);
@@ -24,9 +25,27 @@ GameWidget::GameWidget(QWidget *parent) :
     buttonsLayout->addWidget(saveButton, 1, 0);
     loadButton = new QPushButton("Load");
     buttonsLayout->addWidget(loadButton, 1, 1);
-    makeMove = new QPushButton("Move");
-    buttonsLayout->addWidget(makeMove, 2, 0);
+    moveButton = new QPushButton("Move");
+    buttonsLayout->addWidget(moveButton, 2, 0);
+    playButton = new QPushButton("Play");
+    buttonsLayout->addWidget(playButton, 2, 1);
     loadMap();
+
+    connect(loadButton, SIGNAL(clicked()), this, SLOT(loadMap()));
+    connect(saveButton, SIGNAL(clicked()), this, SLOT(saveMap()));
+
+    connect(playButton, SIGNAL(clicked()), this, SLOT(startPlay()));
+    connect(this, SIGNAL(winnerIs(Fraction)), this, SLOT(winner(Fraction)));
+}
+
+void GameWidget::winner(Fraction frac)
+{
+
+}
+
+void GameWidget::startPlay()
+{
+    playButton->setEnabled(false);
 }
 
 void GameWidget::mousePressEvent(QMouseEvent *event)
@@ -69,7 +88,7 @@ void GameWidget::mousePressEvent(QMouseEvent *event)
 void GameWidget::keyPressEvent(QKeyEvent *event)
 {
     Personage *pers = nullptr;
-    if (event->key() == Qt::Key_Space && settedPersonage)
+    if (event->key() == Qt::Key_Space && (currentPlayer == PLAYER) && settedPersonage)
     {
         if (settedPersonage->getWayToGo().size() != 0 && gameMap->personageAt(settedPersonage->getWayToGo().last())
                 && gameMap->personageAt(settedPersonage->getWayToGo().last())->getPersFraction() != settedPersonage->getPersFraction())
@@ -87,6 +106,11 @@ Personage *GameWidget::fight(Personage *pers1, Personage *pers2)
     Personage *bluePers = (pers1->getPersFraction() == BLUE ? pers1 : pers2);
     Personage *looser = bluePers;
     if (settedPersonage == bluePers)
-        settedPersonage == nullptr;
+        settedPersonage = nullptr;
     gameMap->deletePersonage(bluePers);
+}
+
+void attackEnemy(Personage *pers)
+{
+//    for (int i = 0; i < )
 }
