@@ -297,7 +297,12 @@ void MapFacade::oneMove(Personage *pers)
 			pers->getWayToGo().takeFirst();
 		}
 		//better to "update" optimal rect in scene
-		mapScene->view->repaint();
+        mapScene->view->repaint(pers->objectPixmapItem->boundingRect().toRect());
+//        pers->objectPixmapItem->update(pers->objectPixmapItem->boundingRect());
+//        this->mapScene->scene->update(surMap->objectAt(point.x(), point.y())->objectPixmapItem->boundingRect());
+//        this->mapScene->scene->update(surMap->objectAt(pers->getXCoord(), pers->getYCoord())->objectPixmapItem->boundingRect());
+//        this->mapScene->view->update();
+//        this->mapScene->view->update();
 	}
 }
 
