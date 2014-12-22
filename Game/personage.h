@@ -90,6 +90,8 @@ public:
 	}
 	void clearWayDrawning()
 	{
+        while (!wayDrawing.isEmpty())
+            delete wayDrawing.takeFirst();
 		wayDrawing.clear();
 	}
 	void buildWayDrawning()

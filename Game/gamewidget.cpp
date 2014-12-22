@@ -62,6 +62,8 @@ void GameWidget::mousePressEvent(QMouseEvent *event)
 						gameMap->hidePersWay(settedPersonage);
 					}
 					settedPersonage = pers;
+                    pers->clearWayDrawning();
+                    pers->buildWayDrawning();
 					gameMap->drawPersWay(pers);
 				}
 				else
@@ -156,113 +158,46 @@ void GameWidget::playBot(Fraction frac)
 
 	Personage *loser = nullptr;
 
-	QList<Personage*>::Iterator bot = this->gameMap->listOfPersonages.begin();
-	for (bot; bot != this->gameMap->listOfPersonages.end(); ++bot)
-	{
-		if ((*bot)->getPersFraction() == frac)
-			break;
-	}
-
-	QList<Personage*>::Iterator enemy = this->gameMap->listOfPersonages.begin();
-	for (enemy; enemy != this->gameMap->listOfPersonages.end(); ++enemy)
-	{
-		if ((*enemy)->getPersFraction() != frac)
-			break;
-	}
-
-	if ((*bot)->getPersFraction() != frac)
-		return;
-	if ((*enemy)->getPersFraction() == frac)
-		return;
-
-	while (numberOfBLues() > 0 && numberOfReds() > 0 && (*bot) != nullptr && (*enemy) != nullptr && (*enemy)->getPersFraction() != frac && (*bot)->getPersFraction() == frac)
-	{
-		gameMap->buildWay((*bot), QPoint((*enemy)->getXCoord(), (*enemy)->getYCoord()));
-
-		if ((*bot)->getWayToGo().size() != 0)
-		{
-            gameMap->movePersonage((*bot));
-            if ((*bot)->currentPos() == (*enemy)->currentPos())
-                loser = fight(*bot, *enemy);
-		}
-		else
-		{
-			if ((*enemy) == this->gameMap->listOfPersonages.last())
-				return;
-
-			QList<Personage*>::Iterator tempEnemy = this->gameMap->listOfPersonages.begin();
-			for (tempEnemy; tempEnemy != this->gameMap->listOfPersonages.end(); ++tempEnemy)
-			{
-				if ((*enemy)->getPersFraction() != frac && enemy !=tempEnemy)
-					break;
-			}
-
-			if ((*tempEnemy)->getPersFraction() == frac || tempEnemy == enemy)
-				return;
-			else
-				enemy = tempEnemy;
-
-			continue;
-		}
-
-		if (loser == (*bot) && loser == this->gameMap->listOfPersonages.last())
-		{
-			deletePersonage(loser);
-			return;
-		}
-
-		if ((*bot) == this->gameMap->listOfPersonages.last())
-		{
-			deletePersonage(loser);
-			return;
-		}
-
-		if (loser == (*bot) && numberOfBLues() == 1)
-		{
-			{
-				deletePersonage(loser);
-				return;
-			}
-		}
-
-		if (loser == (*enemy) && numberOfReds() == 1)
-		{
-			{
-				deletePersonage(loser);
-				return;
-			}
-		}
-
-		++bot;
-		for (bot; bot != this->gameMap->listOfPersonages.end(); ++bot)
-		{
-			if ((*bot)->getPersFraction() == frac && ((*bot) != loser))
-				break;
-		}
-
-		if (((*bot)->getPersFraction() != frac) || ((*bot) == loser))
-		{
-			deletePersonage(loser);
-			return;
-		}
-
-		if (loser == (*enemy))
-		{
-			deletePersonage(loser);
-			for (enemy = this->gameMap->listOfPersonages.begin(); enemy != this->gameMap->listOfPersonages.end(); ++enemy)
-			{
-				if (((*enemy)->getPersFraction() != frac))
-					break;
-			}
-
-			if ((*enemy)->getPersFraction() == frac)
-				return;
-
-			continue;
-		}
-
-		deletePersonage(loser);
-	}
+    int botIter = 0;
+    int enemyIter = 0;
+    while (true)
+    {
+        if (botIter < gameMap->listOfPersonages.size() && enemyIter < gameMap->listOfPersonages.size())
+        {
+            while (botIter < gameMap->listOfPersonages.size() && gameMap->listOfPersonages[botIter]->getPersFraction() != frac)
+            {
+                botIter++;
+            }
+            while (enemyIter < gameMap->listOfPersonages.size() && gameMap->listOfPersonages[enemyIter]->getPersFraction() == frac)
+            {
+                enemyIter++;
+            }
+            if (botIter < gameMap->listOfPersonages.size() && enemyIter < gameMap->listOfPersonages.size())
+            {
+                gameMap->buildWay(gameMap->listOfPersonages[botIter], gameMap->listOfPersonages[enemyIter]->currentPos());
+                gameMap->movePersonage(gameMap->listOfPersonages[botIter]);
+                if (gameMap->listOfPersonages[botIter]->currentPos() == gameMap->listOfPersonages[enemyIter]->currentPos())
+                {
+                    loser = fight(gameMap->listOfPersonages[botIter], gameMap->listOfPersonages[enemyIter]);
+                    gameMap->hidePersWay(gameMap->listOfPersonages[botIter]);
+                    if (loser == gameMap->listOfPersonages[enemyIter] && enemyIter > botIter)
+                        botIter++;
+                    else if (loser == gameMap->listOfPersonages[botIter] && enemyIter < botIter)
+                        enemyIter++;
+                    deletePersonage(loser);
+                }
+                else
+                {
+                    gameMap->hidePersWay(gameMap->listOfPersonages[botIter]);
+                    botIter++;
+                    enemyIter++;
+                }
+            }
+            else break;
+        }
+        else break;
+    }
+    return;
 }
 
 void GameWidget::deletePersonage(Personage *pers)
@@ -292,25 +227,27 @@ PlayerIs GameWidget::getPlayerIs(Fraction frac)
 
 void GameWidget::nextMove()
 {
-//	if (numberOfBLues() != 0)
-//	{
-		currentFractionsMove = (currentFractionsMove == RED ? BLUE : RED);
-        for (int i = 0; i < gameMap->listOfPersonages.size(); i++)
-        {
-            if (gameMap->listOfPersonages[i]->getPersFraction() == currentFractionsMove)
-                gameMap->listOfPersonages[i]->updateSteps();
-        }
-		if (getPlayerIs(currentFractionsMove) == COMPUTER)
-		{
-			gameMap->setEnabled(false);
-			buttonsLayout->setEnabled(false);
-			playBot(currentFractionsMove);
 
-			gameMap->setEnabled(true);
-			buttonsLayout->setEnabled(true);
-            emit endedMove();
-        }
-//	}
+    if (settedPersonage)
+    {
+        gameMap->hidePersWay(settedPersonage);
+        settedPersonage = nullptr;
+    }
+    currentFractionsMove = (currentFractionsMove == RED ? BLUE : RED);
+    for (int i = 0; i < gameMap->listOfPersonages.size(); i++)
+    {
+        if (gameMap->listOfPersonages[i]->getPersFraction() == currentFractionsMove)
+            gameMap->listOfPersonages[i]->updateSteps();
+    }
+    if (getPlayerIs(currentFractionsMove) == COMPUTER)
+    {
+        gameMap->setEnabled(false);
+        buttonsLayout->setEnabled(false);
+        playBot(currentFractionsMove);
+        gameMap->setEnabled(true);
+        buttonsLayout->setEnabled(true);
+        emit endedMove();
+    }
 
 //	currentFractionsMove = RED;
 }
