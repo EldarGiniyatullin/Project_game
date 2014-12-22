@@ -9,6 +9,8 @@
 #include <time.h>
 #include <QProgressBar>
 #include <QMessageBox>
+#include <QTimer>
+#include <QDialog>
 
 #include "personage.h"
 
@@ -16,21 +18,27 @@ namespace Ui {
 class Widget;
 }
 
-class Widget : public QWidget
+class Widget : public QDialog
 {
 	Q_OBJECT
 
 public:
-	explicit Widget(Personage *player, Personage *bot, QWidget *parent = 0);
+	explicit Widget(QDialog *parent = 0);
 	~Widget();
-
-signals:
-	void showed(Personage *player, Personage *bot);
+	void start();
+	Personage *Player;
+	Personage *Bot;
+	Fraction turn;
 
 public slots:
-	void battle(Personage *player, Personage *bot);
+	void battle();
 
 private:
 	Ui::Widget *ui;
+	QTimer *timer;
+	QProgressBar *playerHP;
+	QLabel *playerDamage;
+	QLabel *botDamage;
+	QProgressBar *botHP;
 
 };

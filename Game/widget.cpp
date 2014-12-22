@@ -1,44 +1,21 @@
 #include "widget.h"
 #include "ui_widget.h"
 
-void delay()
-{
-	QTime dieTime= QTime::currentTime().addSecs(1);
-
-	while(QTime::currentTime() < dieTime)
-	{
-		QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-	}
-}
-
-Widget::Widget(Personage *player, Personage *bot, QWidget *parent) :
-	QWidget(parent),
+Widget::Widget(QDialog *parent) :
+	QDialog(parent),
 	ui(new Ui::Widget)
 {
 	ui->setupUi(this);
 
-	srand (time(NULL));
-
-	show();
-
-	connect(this, SIGNAL(showed(Personage *, Personage *)), this, SLOT(battle(Personage *, Personage *)));
-
-	emit showed(player, bot);
-	delay();
-}
-
-void Widget::battle(Personage *player, Personage *bot)
-{
 	QGridLayout *layout = new QGridLayout();
 
 	QLabel *playerText = new QLabel("Atacker");
 	layout->addWidget(playerText, 0, 0);
 
 	QGridLayout *playerLayout = new QGridLayout();
-	QProgressBar *playerHP = new QProgressBar();
-	playerHP->setMaximum(player->getHP());
-	playerHP->setValue(player->getHP());
-	QLabel *playerDamage = new QLabel("");
+	playerHP = new QProgressBar();
+
+	playerDamage = new QLabel("");
 	playerLayout->addWidget(playerHP, 0, 0);
 	playerLayout->addWidget(playerDamage, 0, 1);
 	layout->addLayout(playerLayout, 0, 1);
@@ -47,52 +24,85 @@ void Widget::battle(Personage *player, Personage *bot)
 	layout->addWidget(botText, 1, 0);
 
 	QGridLayout *botLayout = new QGridLayout();
-	QProgressBar *botHP = new QProgressBar();
-	botHP->setMaximum(bot->getHP());
-	botHP->setValue(bot->getHP());
-	QLabel *botDamage = new QLabel("");
+	botHP = new QProgressBar();
+
+	botDamage = new QLabel("");
 	botLayout->addWidget(botHP, 0, 0);
 	botLayout->addWidget(botDamage, 0, 1);
 	layout->addLayout(botLayout, 1, 1);
 
-	playerHP->setFormat("%v");
-	botHP->setFormat("%v");
 
 	this->setLayout(layout);
 
-	delay();
+	timer = new QTimer;
+	connect(timer, SIGNAL(timeout()), this, SLOT(battle()));
+}
 
-	while (bot->getHP() > 0 && player->getHP() > 0)
+void Widget::start()
+{
+	playerHP->setMaximum(Player->getHP());
+	playerHP->setValue(Player->getHP());
+
+	turn = Player->getPersFraction();
+	botHP->setMaximum(Bot->getHP());
+	botHP->setValue(Bot->getHP());
+
+	playerHP->setFormat("%v");
+	botHP->setFormat("%v");
+
+	timer->start(200);
+}
+
+void Widget::battle()
+{
+	if (turn == Player->getPersFraction())
 	{
 		int random = rand() % 100 + 1;
-
 		botDamage->setText(QString::number( (-1)*random));
-		bot->setHP(bot->getHP() - random);
-		botHP->setValue(bot->getHP());
+		Bot->setHP(Bot->getHP() - random);
+		botHP->setValue(Bot->getHP());
 
-		if (bot->getHP() < 0)
+		if (Bot->getHP() < 0)
 		{
 			botHP->setValue(0);
-			break;
+			turn = BLACK;
+			timer->setInterval(1000);
+
+			return;
 		}
 
-		delay();
+		turn = Bot->getPersFraction();
 
+		return;
+	}
+
+	if (turn == Bot->getPersFraction())
+	{
 		int random2 = rand() % 100 + 1;
 
-		playerDamage->setText(QString::number((-1)*random2));
-		player->setHP(player->getHP() - random2);
-		playerHP->setValue(player->getHP());
+		playerDamage->setText(QString::number((-1) * random2));
+		Player->setHP(Player->getHP() - random2);
+		playerHP->setValue(Player->getHP());
 
-		if (player->getHP() < 0)
+		if (Player->getHP() < 0)
 		{
 			playerHP->setValue(0);
-			break;
+			turn = BLACK;
+			timer->setInterval(1000);
+
+			return;
 		}
 
-		delay();
+		turn = Player->getPersFraction();
+
+		return;
 	}
-	delay();
+
+	if (turn = BLACK)
+	{
+		timer->stop();
+		this->hide();
+	}
 }
 
 Widget::~Widget()

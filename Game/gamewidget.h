@@ -37,6 +37,7 @@ public:
 	int numberOfReds();
 	int numberOfBLues();
 
+
 signals:
     void winnerIs(Fraction frac);
 public slots:
@@ -59,6 +60,6 @@ public slots:
         this->currentFractionsMove = RED;
         this->gameMap->show();
         gameMap->getView()->show();
-    }
+	}
 
 };
