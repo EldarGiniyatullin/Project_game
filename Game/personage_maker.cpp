@@ -6,8 +6,8 @@ PersonageMaker::PersonageMaker(int squareSize)
     map.clear();
     QPixmap warriorRed("://first_personage.png");
     QPixmap warriorBlue("://blue_personage.png");
-    map.insert(RED, Personage(warriorRed, warriorRed.width() / (-2), (squareSize / 2) - warriorRed.height(), RED, WARRIOR));
-    map.insert(BLUE, Personage(warriorBlue, warriorBlue.width() / (-2), (squareSize / 2) - warriorBlue.height(), BLUE, WARRIOR));
+    map.insert(RED, Personage(warriorRed, warriorRed.width() / (-2), (squareSize / 2) - warriorRed.height(), RED, WARRIOR, 10));
+    map.insert(BLUE, Personage(warriorBlue, warriorBlue.width() / (-2), (squareSize / 2) - warriorBlue.height(), BLUE, WARRIOR, 10));
 }
 
 PersonageMaker::~PersonageMaker()

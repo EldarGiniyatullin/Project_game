@@ -5,7 +5,7 @@ GameWidget::GameWidget(QWidget *parent) :
 	currentFractionsMove(RED),
 	settedPersonage(nullptr),
 	redPlayer(PLAYER),
-	bluePlayer(COMPUTER),
+    bluePlayer(COMPUTER),
 	currentPlayer(redPlayer),
 	QWidget(parent)
 {
@@ -35,6 +35,7 @@ GameWidget::GameWidget(QWidget *parent) :
 	connect(saveButton, SIGNAL(clicked()), this, SLOT(saveMap()));
 	connect(moveButton, SIGNAL(clicked()), this, SLOT(nextMove()));
 	connect(this, SIGNAL(winnerIs(Fraction)), this, SLOT(winner(Fraction)));
+    connect(this, SIGNAL(endedMove()), this, SLOT(nextMove()));
 
 }
 
@@ -93,7 +94,7 @@ void GameWidget::keyPressEvent(QKeyEvent *event)
 				&& gameMap->personageAt(settedPersonage->getWayToGo().last())->getPersFraction() != settedPersonage->getPersFraction())
 			pers = gameMap->personageAt(settedPersonage->getWayToGo().last());
 		gameMap->movePersonage(settedPersonage);
-		if (pers)
+        if (pers && pers->currentPos() == settedPersonage->currentPos())
 		{
 			deletePersonage(fight(settedPersonage, pers));
 		}
@@ -180,8 +181,9 @@ void GameWidget::playBot(Fraction frac)
 
 		if ((*bot)->getWayToGo().size() != 0)
 		{
-			gameMap->movePersonage((*bot));
-			loser = fight(*bot, *enemy);
+            gameMap->movePersonage((*bot));
+            if ((*bot)->currentPos() == (*enemy)->currentPos())
+                loser = fight(*bot, *enemy);
 		}
 		else
 		{
@@ -290,9 +292,14 @@ PlayerIs GameWidget::getPlayerIs(Fraction frac)
 
 void GameWidget::nextMove()
 {
-	if (numberOfBLues() != 0)
-	{
+//	if (numberOfBLues() != 0)
+//	{
 		currentFractionsMove = (currentFractionsMove == RED ? BLUE : RED);
+        for (int i = 0; i < gameMap->listOfPersonages.size(); i++)
+        {
+            if (gameMap->listOfPersonages[i]->getPersFraction() == currentFractionsMove)
+                gameMap->listOfPersonages[i]->updateSteps();
+        }
 		if (getPlayerIs(currentFractionsMove) == COMPUTER)
 		{
 			gameMap->setEnabled(false);
@@ -301,10 +308,11 @@ void GameWidget::nextMove()
 
 			gameMap->setEnabled(true);
 			buttonsLayout->setEnabled(true);
-		}
-	}
+            emit endedMove();
+        }
+//	}
 
-	currentFractionsMove = RED;
+//	currentFractionsMove = RED;
 }
 
 void attackEnemy(Personage *pers)

@@ -12,5 +12,6 @@
         <file>cross.png</file>
         <file>dot.png</file>
         <file>blue_personage.png</file>
+        <file>unpassable_dot.png</file>
     </qresource>
 </RCC>

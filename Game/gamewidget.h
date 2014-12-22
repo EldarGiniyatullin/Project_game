@@ -39,6 +39,7 @@ public:
 
 
 signals:
+    void endedMove();
     void winnerIs(Fraction frac);
 public slots:
     void nextMove();

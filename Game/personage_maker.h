@@ -15,9 +15,3 @@ public:
 protected:
     QMap<Fraction, Personage> map;
 };
-
-
-
-
-
-

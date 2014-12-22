@@ -139,7 +139,7 @@ void MapFacade::movePersonage(Personage *pers)
 {
 	//sound
 	//while !endOfMoves
-	while (!pers->getWayToGo().isEmpty())
+    while (!pers->getWayToGo().isEmpty() && pers->getCurrentSteps())
 	{
 		moveState = MOVE;
 		QThread::msleep(100);
@@ -195,7 +195,7 @@ bool MapFacade::checkPersWay(Personage *pers)
 
 void MapFacade::drawPersWay(Personage *pers)
 {
-	for (int i = 0; i < pers->getWayDrawning().size(); i++)
+    for (int i = 0; i < pers->getWayDrawning().size(); i++)
 	{
 		mapScene->scene->addItem(pers->getWayDrawning()[i]);
 		pers->getWayDrawning()[i]->setPos(squareCenter(pers->getWayToGo()[i]));
@@ -296,6 +296,7 @@ void MapFacade::oneMove(Personage *pers)
 			pers->setPixPos(squareCenter(point), point.y() + ySquareNumber);
 			pers->getWayToGo().takeFirst();
 		}
+        pers->setCurrentSteps(pers->getCurrentSteps() - 1);
 		//better to "update" optimal rect in scene
         mapScene->view->repaint(pers->objectPixmapItem->boundingRect().toRect());
 //        pers->objectPixmapItem->update(pers->objectPixmapItem->boundingRect());

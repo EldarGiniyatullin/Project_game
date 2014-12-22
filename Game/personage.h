@@ -14,16 +14,16 @@ class Personage : public MapObject
 {
 public:
 
-    Personage() :  MapObject(QPixmap("://No_image.png")), persFraction(RED), persSpeciality(WARRIOR), hp(1000) {}
+    Personage() :  MapObject(QPixmap("://No_image.png")), persFraction(RED), persSpeciality(WARRIOR), hp(1000), maxSteps(10), currentSteps(maxSteps) {}
 	Personage(QPixmap pixmap, Fraction frac, Speciality spec, int xPos, int yPos)
-        : MapObject(pixmap),  persFraction(frac), persSpeciality(spec), xCoord(xPos), yCoord(yPos), hp(1000) {wayToGo.clear();}
+        : MapObject(pixmap),  persFraction(frac), persSpeciality(spec), xCoord(xPos), yCoord(yPos), hp(1000), maxSteps(10), currentSteps(maxSteps) {wayToGo.clear();}
 
-	Personage(QPixmap pixmap, int vertDraw, int horizDraw, Fraction frac, Speciality spec)
-        :  MapObject(pixmap,  vertDraw, horizDraw), persFraction(frac), persSpeciality(spec), hp(1000) {wayToGo.clear();}
-    Personage(QPixmap pixmap, Fraction frac, Speciality spec) :  MapObject(pixmap), persFraction(frac), persSpeciality(spec), hp(1000) {wayToGo.clear();}
-    Personage(PixmapItem *pixItem, Fraction frac, Speciality spec) :  MapObject(pixItem), persFraction(frac), persSpeciality(spec),  hp(1000) {wayToGo.clear();}
+    Personage(QPixmap pixmap, int vertDraw, int horizDraw, Fraction frac, Speciality spec, int maximalSteps)
+        :  MapObject(pixmap,  vertDraw, horizDraw), persFraction(frac), persSpeciality(spec), hp(1000), maxSteps(maximalSteps), currentSteps(maxSteps) {wayToGo.clear();}
+    Personage(QPixmap pixmap, Fraction frac, Speciality spec, int maximalSteps) :  MapObject(pixmap), persFraction(frac), persSpeciality(spec), hp(1000), maxSteps(maximalSteps), currentSteps(maxSteps) {wayToGo.clear();}
+    Personage(PixmapItem *pixItem, Fraction frac, Speciality spec) :  MapObject(pixItem), persFraction(frac), persSpeciality(spec),  hp(1000), maxSteps(10), currentSteps(maxSteps) {wayToGo.clear();}
     Personage(const Personage& personageToCopy) : hp(1000), MapObject(personageToCopy), persFraction(personageToCopy.persFraction),
-		persSpeciality(personageToCopy.persSpeciality) {}
+        persSpeciality(personageToCopy.persSpeciality), maxSteps(personageToCopy.maxSteps), currentSteps(maxSteps) {}
 
 	~Personage()
 	{
@@ -53,6 +53,11 @@ public:
 	{
 		persSpeciality = value;
 	}
+
+    void updateSteps()
+    {
+        currentSteps = maxSteps;
+    }
 
 	Fraction getPersFraction() const
 	{
@@ -90,12 +95,20 @@ public:
 	void buildWayDrawning()
 	{
 		if (!wayToGo.isEmpty())
-		{
-			for (int i = 0; i < wayToGo.size() - 1; i++)
+        {
+            for (int i = 0; i < wayToGo.size() && i < currentSteps; i++)
 			{
 				wayDrawing.append(new PixmapItem(QPixmap("://dot.png")));
 				wayDrawing.last()->setZValue(100);
 			}
+            int min = (wayToGo.size() < currentSteps ? wayToGo.size() : currentSteps);
+            for (int i = min; i < wayToGo.size(); i++)
+            {
+                wayDrawing.append(new PixmapItem(QPixmap("://unpassable_dot.png")));
+                wayDrawing.last()->setZValue(100);
+            }
+            if (wayDrawing.size())
+                delete wayDrawing.takeLast();
 			wayDrawing.append(new PixmapItem(QPixmap("://cross.png")));
 			wayDrawing.last()->setZValue(100);
 		}
@@ -119,13 +132,21 @@ public:
 		yCoord = value;
 	}
 
+    int getCurrentSteps() const;
+    void setCurrentSteps(int value);
+
+    int getMaxSteps() const;
+    void setMaxSteps(int value);
+
 protected:
-	Fraction persFraction;
-	Speciality persSpeciality;
-	int xCoord;
+    Fraction persFraction;
+    Speciality persSpeciality;
+    int xCoord;
 	int yCoord;
 	QList<QPoint> wayToGo;
 	QList<PixmapItem*> wayDrawing;
 	int hp;
+    int maxSteps;
+    int currentSteps;
 
 };
